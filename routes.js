@@ -74,9 +74,9 @@ router.get('/', (req, res) => {
             }
                 
         }
-        console.log(finalData);
         let resContent = "";
-        resContent += "RUOKELISTE BY TOIVOTON\n"
+        resContent += `\nRuokeliste\n`;
+        resContent += "BY TOIVOTON\n"
         resContent += "-----------------------------------------------------\n";
         for(let i = 0; i<finalData.length; i++) {
             resContent += `${finalData[i].header}\n`;
@@ -87,12 +87,8 @@ router.get('/', (req, res) => {
             }
             resContent += "\n";
         }
-        resContent += "\n";
         resContent += "-----------------------------------------------------\n";
         res.send(resContent);
-
-        console.log(finalData);
-        //console.log(res.data);
     })
     .catch(function(err) {
         console.log(err);
