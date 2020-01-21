@@ -3,10 +3,11 @@ const axios = require('axios');
 
 const router = new express.Router();
 
-router.get('/ruoke', (req, res) => {
+router.get('/', (req, res) => {
+    let finalData = [];
     axios.get('https://www.campusravita.fi/fi/ravintolat-ja-kahvila')
-    .then(function(res) {
-        let data = res.data;
+    .then(function(response) {
+        let data = response.data;
         let datanew = data.split('\n');
         let foundIndex = -1;
         for(let i = 0; i<datanew.length; i++) {
@@ -42,7 +43,6 @@ router.get('/ruoke', (req, res) => {
         new_arr = new_arr.slice(0, -7);
         new_arr.splice(0, 2);
 
-        let finalData = [];
         let curSection = -1;
         let ongoingSection = false;
         for(let i = 0; i<new_arr.length; i++) {
@@ -74,16 +74,30 @@ router.get('/ruoke', (req, res) => {
             }
                 
         }
+        console.log(finalData);
+        let resContent = "";
+        resContent += "RUOKELISTE BY TOIVOTON\n"
+        resContent += "-----------------------------------------------------\n";
+        for(let i = 0; i<finalData.length; i++) {
+            resContent += `${finalData[i].header}\n`;
+
+            for(let j = 0; j<finalData[i].contents.length; j++) {
+                resContent += `\t${finalData[i].contents[j]}\n`;
+                
+            }
+            resContent += "\n";
+        }
+        resContent += "\n";
+        resContent += "-----------------------------------------------------\n";
+        res.send(resContent);
 
         console.log(finalData);
-
-    
         //console.log(res.data);
     })
     .catch(function(err) {
         console.log(err);
     });
-    res.json({success:true});
+    
 });
 
 module.exports = router;
