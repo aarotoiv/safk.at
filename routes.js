@@ -45,8 +45,10 @@ router.get('/', (req, res) => {
 
         let curSection = -1;
         let ongoingSection = false;
+        let longest = 0;
         for(let i = 0; i<new_arr.length; i++) {
             if(new_arr[i].includes("<h3>")) {
+                longest = 0;
                 ongoingSection = true;
                 curSection++;
                 finalData[curSection] = {
@@ -62,9 +64,21 @@ router.get('/', (req, res) => {
                 }
                 if(shouldAdd) {
                     if(ongoingSection == true) {
-                        finalData[curSection].header += new_arr[i].replace("<h3>", "");
+                        let data = new_arr[i].replace("<h3>", "");
+                        if(data.length > finalData[curSection].longest)
+                            finalData[curSection].longest = data.length;
+                        if(data.length > longest) 
+                            longest = data.length;
+                        finalData[curSection].header += data;
                     } else {
                         let data = new_arr[i];
+                        if(data.length > finalData[curSection].longest) {
+                            finalData[curSection].longest = data.length;
+                        }
+
+                        if(data.length > longest) 
+                            longest = data.length;
+
                         if(data.length > 2) {
                             finalData[curSection].contents.push(new_arr[i]);
                         }
@@ -76,18 +90,33 @@ router.get('/', (req, res) => {
         }
         let resContent = "";
         resContent += `\nRuokeliste\n`;
-        resContent += "BY TOIVOTON\n"
-        resContent += "-----------------------------------------------------\n";
+        let bar = "";
+        let nlSpacing = "";
+        for(var i = 0; i<=longest+4; i++) {
+            bar += "─";
+            nlSpacing += " ";
+        }
+        resContent += `╭${bar}╮\n`;
         for(let i = 0; i<finalData.length; i++) {
-            resContent += `${finalData[i].header}\n`;
-
+            resContent += `│${bar}│\n`;
+            let headerValue = finalData[i].header;
+            for(let j = 0; j<longest+3 - finalData[i].header.length; j++) {
+                headerValue += " ";
+            }
+            resContent += `│ ${headerValue} │\n`;
+            resContent += `│${bar}│\n`;
             for(let j = 0; j<finalData[i].contents.length; j++) {
-                resContent += `\t${finalData[i].contents[j]}\n`;
+                const content = finalData[i].contents[j];
+                resContent += `│ ${content} `;
+                for(let i = 0; i<longest+3 - content.length; i++) {
+                    resContent += " ";
+                }
+                resContent += "│\n";
                 
             }
-            resContent += "\n";
+            resContent += `│${nlSpacing}│\n`;
         }
-        resContent += "-----------------------------------------------------\n";
+        resContent += `╰${bar}╯\n`;
         res.send(resContent);
     })
     .catch(function(err) {
