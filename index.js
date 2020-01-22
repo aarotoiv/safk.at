@@ -12,6 +12,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 const ruoke = require('./routes');
 app.use('/', ruoke);
 //port = 80 in prod
-const port = process.env.PORT || 5000;
+//5000 or something in dev
+const port = process.env.PORT || 80;
 
 const server = app.listen(port, () => console.log("RUNNING IN PORT", port));
