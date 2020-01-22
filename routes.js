@@ -1,23 +1,25 @@
 const express = require('express');
-const axios = require('axios');
 const util = require('./util');
 
 const router = new express.Router();
+const osmosis = require('osmosis');
 
 router.get('/', (req, res) => {
-    axios.get('https://www.campusravita.fi/fi/ravintolat-ja-kahvila')
-    .then(function(response) {
-        const content = util.cleanUp(response.data);
+    osmosis
+    .get('https://www.campusravita.fi/fi/ravintolat-ja-kahvila')
+    .find('.view-ruokalista')
+    .set({
+        headers: ['h3'],
+        everything: ['h3, div']
+    })
+    .data(content => {
+        const cleaned = util.cleanUp(content);
         if(util.showWebsite(req.device.type)) {
-            contentArray = content.split("\n");
+            contentArray = cleaned.split("\n");
             res.render('index', {content: contentArray});
         } else {
-            res.send(content);
+            res.send(cleaned);
         }
-        
-    })
-    .catch(function(err) {
-        console.log(err);
     });
     
 });

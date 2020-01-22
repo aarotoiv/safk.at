@@ -11,11 +11,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "axios": "*",
     "body-parser": "*",
     "ejs": "^3.0.1",
     "express": "*",
     "express-device": "^0.4.2",
-    "morgan": "*"
+    "morgan": "*",
+    "osmosis": "^1.1.10"
   }
 }
