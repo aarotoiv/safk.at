@@ -82,6 +82,39 @@ module.exports = {
             }
                 
         }
-        return {"data": finalData, "longest": longest};
+        let resContent = "";
+        let bar = "";
+        let nlSpacing = "";
+        for(var i = 0; i<=longest+4; i++) {
+            bar += "─";
+            nlSpacing += " ";
+        }
+        resContent += `╭${bar}╮\n`;
+        for(let i = 0; i<finalData.length; i++) {
+            resContent += `│${bar}│\n`;
+            let headerValue = finalData[i].header;
+            for(let j = 0; j<longest+3 - finalData[i].header.length; j++) {
+                headerValue += " ";
+            }
+            resContent += `│ ${headerValue} │\n`;
+            resContent += `│${bar}│\n`;
+            for(let j = 0; j<finalData[i].contents.length; j++) {
+                const content = finalData[i].contents[j];
+                resContent += `│ ${content} `;
+                for(let i = 0; i<longest+3 - content.length; i++) {
+                    resContent += " ";
+                }
+                resContent += "│\n";
+                
+            }
+            resContent += `│${nlSpacing}│\n`;
+        }
+        resContent += `╰${bar}╯\n`;
+        return resContent;
+    },
+    showWebsite: function(type) {
+        if(type == "phone" || type == "desktop") 
+            return true;
+        return false;
     }
 }
