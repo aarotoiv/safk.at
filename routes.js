@@ -10,7 +10,7 @@ router.get('/', (req, res) => {
     .find('.view-ruokalista')
     .set({
         headers: ['h3'],
-        everything: ['h3, div']
+        everything: ['h3, div.views-row']
     })
     .data(content => {
         const cleaned = util.cleanUp(content);
