@@ -1,7 +1,7 @@
 {
-  "name": "juu",
+  "name": "safk.at",
   "version": "1.0.0",
-  "description": "",
+  "description": "Beautifully formatted daily school cafeteria offerings.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
