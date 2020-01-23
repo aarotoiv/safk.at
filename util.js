@@ -17,7 +17,6 @@ module.exports = {
             if(content.headers[i].length > longest)
                 longest = content.headers[i].length;
         }
-        
         let dataIndex = -1;
         for(let i = 0; i < content.everything.length; i++) {
             if(content.everything[i] == "n") 
@@ -29,7 +28,6 @@ module.exports = {
             if(content.everything[i].length > longest)
                 longest = content.everything[i].length;
         }
-
         let resContent = "";
         let bar = "";
         let nlSpacing = "";
@@ -49,11 +47,10 @@ module.exports = {
             for(let j = 0; j<finalData[i].contents.length; j++) {
                 const content = finalData[i].contents[j];
                 resContent += `│ ${content} `;
-                for(let i = 0; i<longest+3 - content.length; i++) {
+                for(let z = 0; z<longest+3 - content.length; z++) {
                     resContent += " ";
                 }
                 resContent += "│\n";
-                
             }
             resContent += `│${nlSpacing}│\n`;
         }
