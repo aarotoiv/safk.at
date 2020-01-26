@@ -14,14 +14,14 @@ router.get('/', (req, res) => {
     })
     .data(content => {
         //debug data
-        content.headers = ["aa", "aaa", "aaaa", "aaaaa", "aaaa aaaa"];
-        content.everything = ["aa", "kysta", "asdfasfdasdf", "aaa", "mitä", "asdfasdfasdfasdf", "hehe", "aaaa", "juju", "jaja", "jooo", "aaaaa", "heheheh", "hehehehehheee", "heheheheee", "aaaa aaaa", "huuu", "haaa"];
+        //content.headers = ["aa", "aaa", "aaaa", "aaaaa", "aaaa aaaa"];
+        //content.everything = ["aa", "kysta", "asdfasfdasdf", "aaa", "mitä", "asdfasdfasdfasdf", "hehe", "aaaa", "juju", "jaja", "jooo", "aaaaa", "heheheh", "hehehehehheee", "heheheheee", "aaaa aaaa", "huuu", "haaa"];
 
         
         if(util.showWebsite(req.device.type)) {
             res.render('index', {content: content});
         } else {
-            res.send(content.headers.length > 0 ? util.cleanUp(content) : "(⌣́_⌣̀) No menu available.\n");
+            res.send(content.headers.length > 0 ? util.cleanUp(content) : "No menu available.\n");
         }
     });
     

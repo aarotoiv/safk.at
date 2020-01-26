@@ -39,14 +39,18 @@
                 margin-bottom: 5px;
             }
         </style>
-        <div id="safka-container">
-            <% for(var i=0; i < content.everything.length; i++) { %>
-                <% if(content.headers.includes(content.everything[i])) {%>
-                    <span class="header"><%= content.everything[i] %></span>
-                <%} else { %>
-                    <span class="item"><%= content.everything[i] %></span>
+        <% if(content.headers.length > 0) { %>
+            <div id="safka-container">
+                <% for(var i=0; i < content.everything.length; i++) { %>
+                    <% if(content.headers.includes(content.everything[i])) {%>
+                        <span class="header"><%= content.everything[i] %></span>
+                    <%} else { %>
+                        <span class="item"><%= content.everything[i] %></span>
+                    <% } %>
                 <% } %>
-            <% } %>
-        </div>
+            </div>
+        <% } else { %>
+            <span id="nomenu">No menu available.</span>
+        <% } %>
     </body>
 </html>
