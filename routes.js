@@ -15,17 +15,13 @@ router.get('/', (req, res) => {
     .data(content => {
         //debug data
         content.headers = ["aa", "aaa", "aaaa", "aaaaa", "aaaa aaaa"];
-        content.everything = ["aa", "kysta", "perseessäni", "aaa", "mitä", "vittua", "hehe", "aaaa", "juju", "jaja", "jooo", "aaaaa", "heheheh", "hehehehehheee", "heheheheee", "aaaa aaaa", "huuu", "haaa"];
+        content.everything = ["aa", "kysta", "asdfasfdasdf", "aaa", "mitä", "asdfasdfasdfasdf", "hehe", "aaaa", "juju", "jaja", "jooo", "aaaaa", "heheheh", "hehehehehheee", "heheheheee", "aaaa aaaa", "huuu", "haaa"];
 
-
-
-        const cleaned = util.cleanUp(content);
         
         if(util.showWebsite(req.device.type)) {
-            contentArray = cleaned.split("\n");
-            res.render('index', {content: contentArray});
+            res.render('index', {content: content});
         } else {
-            res.send(content.headers.length > 0 ? cleaned : "(⌣́_⌣̀) No menu available.\n");
+            res.send(content.headers.length > 0 ? util.cleanUp(content) : "(⌣́_⌣̀) No menu available.\n");
         }
     });
     

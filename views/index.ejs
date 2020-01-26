@@ -13,18 +13,40 @@
                 font-family: 'mononokiRegular';
                 font-weight: normal;
                 font-style: normal; 
-                font-size: 150%;
             }
-            pre {
-                padding:0;
-                margin:0;
+            #safka-container {
+                /*CSS HACKS*/
+                display:inline-block;
+                border: solid 1px #fff;
+            }
+            span {
                 color: #fff;
-                word-spacing: 0px !important;
-                letter-spacing: 0px !important;
+                font-size: 20px;
+                display:block;
+                padding-right: 15px;
+                margin-left: 10px;
+                margin-right: 10px;
+            }
+            .header {
+                border-bottom: solid 2px #fff;
+                margin-bottom: 5px;
+                margin-top: 15px;
+            }
+            .header:first-child {
+                margin-top: 5px;
+            }
+            .item:last-child {
+                margin-bottom: 5px;
             }
         </style>
-            <% for(var i=0; i < content.length; i++) { %>
-                <pre><%= content[i] %></pre>
+        <div id="safka-container">
+            <% for(var i=0; i < content.everything.length; i++) { %>
+                <% if(content.headers.includes(content.everything[i])) {%>
+                    <span class="header"><%= content.everything[i] %></span>
+                <%} else { %>
+                    <span class="item"><%= content.everything[i] %></span>
+                <% } %>
             <% } %>
+        </div>
     </body>
 </html>

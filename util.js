@@ -3,12 +3,6 @@ module.exports = {
         let finalData = [];
         let longest = 0;
         
-        for(let i = 0; i<content.headers.length; i++) {
-            for(let j = 0; j<content.everything.length; j++) {
-                if(content.headers[i] == content.everything[j]) 
-                    content.everything[j] = "n";
-            }
-        }
         for(let i = 0; i < content.headers.length; i++) {
             finalData[i] = {
                 header: content.headers[i],
@@ -19,7 +13,7 @@ module.exports = {
         }
         let dataIndex = -1;
         for(let i = 0; i < content.everything.length; i++) {
-            if(content.everything[i] == "n") 
+            if(content.headers.includes(content.everything[i])) 
                 dataIndex++;
             else {
                 if(finalData[dataIndex])
