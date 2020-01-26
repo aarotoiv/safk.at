@@ -35,7 +35,7 @@ module.exports = {
             bar += "─";
             nlSpacing += " ";
         }
-        resContent += `╭${bar}╮\n`;
+        resContent += `┌${bar}┐\n`;
         for(let i = 0; i<finalData.length; i++) {
             resContent += `│${bar}│\n`;
             let headerValue = finalData[i].header;
@@ -54,7 +54,7 @@ module.exports = {
             }
             resContent += `│${nlSpacing}│\n`;
         }
-        resContent += `╰${bar}╯\n`;
+        resContent += `└${bar}┘\n`;
         
         return resContent;
     },
