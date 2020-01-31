@@ -97,7 +97,6 @@ module.exports = {
                 for(let k = 0; k<longest - lineLength; k++) {
                     spacing += " ";
                 }
-                //console.log(line);
                 render += `│${(line ? line : "") + spacing} `;                
             }
             render += "\n";

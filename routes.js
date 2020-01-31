@@ -79,6 +79,8 @@ router.get('/:class', async (req, res) => {
     if(days && days != [] && days.length > 1) {
         const cleaned = util.cleanSchedule(days);
         res.send(cleaned);
+    } else {
+        res.send("Request timed out. Did you use the correct class ID?");
     }
 });
 
