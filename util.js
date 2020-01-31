@@ -1,5 +1,5 @@
 module.exports = {
-    cleanUp: function(content) {
+    cleanMenu: function(content) {
         let finalData = [];
         let longest = 0;
         
@@ -51,10 +51,67 @@ module.exports = {
         resContent += `└${bar}┘\n`;
         
         return resContent;
+    }, 
+    cleanSchedule: function(days) {
+        let cleaned = [];
+        let mostRows = 0;
+        days.forEach(function(day) {
+            let titleDivider = "";
+            let dayDivider = "";
+            for(let i = 0; i< day.longest; i++) {
+                titleDivider += "━";
+                dayDivider += "─";
+            }
+
+            let dayContent = "";
+            let rows = 0;
+            dayContent += day.day;
+            dayContent += "\n"
+            dayContent += titleDivider;
+            dayContent += "\n";
+            rows += 2;
+            day.events.forEach(function(event) {
+                dayContent += event.time;
+                dayContent += "\n";
+                rows++;
+                event.info.forEach(function(infoLine) {
+                    dayContent += infoLine;
+                    dayContent += "\n";
+                    rows++;
+                });
+                dayContent += `${dayDivider}\n`;
+                rows++;
+            });
+            if(rows > mostRows)
+                mostRows = rows;
+            cleaned.push({day: dayContent.split("\n"), longest: day.longest});
+        });
+        let render = "";
+        for(let i = 0; i<mostRows; i++) {
+            for(let j = 0; j<cleaned.length; j++) {
+                const longest = cleaned[j].longest;
+                const line = cleaned[j].day[i];
+                const lineLength = line ? line.length : 0;
+                
+                let spacing = "";
+                for(let k = 0; k<longest - lineLength; k++) {
+                    spacing += " ";
+                }
+                //console.log(line);
+                render += `│${(line ? line : "") + spacing} `;                
+            }
+            render += "\n";
+        }
+        return render;
     },
     showWebsite: function(type) {
         if(type == "phone" || type == "desktop") 
             return true;
         return false;
+    },
+    delay: function(time) {
+        return new Promise(function(resolve) {
+            setTimeout(resolve, time);
+        });
     }
 }
