@@ -77,10 +77,17 @@ router.get('/:class', async (req, res) => {
         iterations++;
     }   
     if(days && days != [] && days.length > 1) {
-        const cleaned = util.cleanSchedule(days);
-        res.send(cleaned);
+        if(util.showWebsite(req.device.type)) {
+            res.render('sched', {content: days});
+        } else {
+            const cleaned = util.cleanSchedule(days);
+            res.send(cleaned);
+        }
     } else {
-        res.send("Request timed out. Did you use the correct class ID?\n");
+        if(util.showWebsite(req.device.type)) {
+            res.render('sched', {content: []});
+        } else 
+            res.send("Request timed out. Did you use the correct class ID?\n");
     }
 });
 
