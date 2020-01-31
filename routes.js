@@ -27,4 +27,8 @@ router.get('/', (req, res) => {
     
 });
 
+router.get('/:class', (req, res) => {
+    
+});
+
 module.exports = router;
