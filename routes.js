@@ -40,7 +40,7 @@ router.get('/:class', async (req, res) => {
     await page.click("#groupSearchForm fieldset center input");
     let days = [];
     let iterations = 0;
-    while(days == "" || !days && iterations < 5) {
+    while(days.length < 1 && iterations < 5) {
         await util.delay(DELAY_TIME);
         days = await page.evaluate(() => {
             const cols = document.querySelectorAll(".cl-colevents");
@@ -80,7 +80,7 @@ router.get('/:class', async (req, res) => {
         const cleaned = util.cleanSchedule(days);
         res.send(cleaned);
     } else {
-        res.send("Request timed out. Did you use the correct class ID?");
+        res.send("Request timed out. Did you use the correct class ID?\n");
     }
 });
 
