@@ -14,7 +14,64 @@
                 font-weight: normal;
                 font-style: normal; 
             }
+            #schedule-container {
+                width: 80%;
+                height: 50%;
+                margin: 50px auto;
+                position:relative;
+            }
+            .schedule-block {
+                width: 20%;
+                min-height: 500px;
+                height: auto;
+                overflow:hidden;
+                float:left;
+                overflow:hidden;
+                margin: 0;
+                padding: 0;
+            }
+            p {
+                color: #fff;
+            }
+            .block-date {
+                text-align:center;
+                font-size: 25px;
+                color: #fff;
+            }
+            .block-event {
+                margin-left: 10px;
+                margin-right: 10px;
+                width: calc(100% - 20px);
+                border-bottom: solid 5px #fff;
+            }
+            .block-event:last-child() {
+                border-bottom: none;
+            }
+            #no-sched {
+                color: #fff;
+            }
         </style>
+        <% if(content.length > 0) { %>
+            <div id="schedule-container">
+                <% for(var i = 0; i < content.length; i++) { %><div class="schedule-block">
+                    <p class="block-date">
+                        <%= content[i].day %>
+                    </p> 
+                    <% for(var j = 0; j < content[i].events.length; j++) { %><div class="block-event">
+                        <p class="event-time">
+                            <%= content[i].events[j].time %>
+                        </p>
+                        <% for(var k = 0; k < content[i].events[j].info.length; k++) { %>
+                            <p class="event-info-line">
+                                <%= content[i].events[j].info[k] %>
+                            </p>
+                        <% } %>
+                    </div><% } %>
+                </div><% } %>
+            </div>
+        <% } else { %>
+            <span id="no-sched">Request timed out. Did you use the correct class ID?</span>
+        <% } %>
         
     </body>
 </html>
