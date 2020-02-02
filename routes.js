@@ -32,63 +32,67 @@ router.get('/', (req, res) => {
 router.get('/:class', async (req, res) => {
     const luokka = req.params.class;
     const DELAY_TIME = 500;
-    
-    const browser = await puppeteer.launch();
-    const page = await browser.newPage();
-    await page.goto("https://lukkarit.tamk.fi");
-    await page.type("#sgrp", luokka);
-    await page.click("#groupSearchForm fieldset center input");
-    let days = [];
-    let iterations = 0;
-    while(days.length < 1 && iterations < 5) {
-        await util.delay(DELAY_TIME);
-        days = await page.evaluate(() => {
-            const cols = document.querySelectorAll(".cl-colevents");
-            let ret = [];
-            cols.forEach(function(col, i) {
-                ret[i] = {};
-                ret[i].longest = 27;
-                const day = cols[i].getAttribute("clday");
-                ret[i].day = day;
-                ret[i].events = [];
-                const events = cols[i].querySelectorAll(".cl-event");
-                events.forEach(function(event, j) {
-                    const eventTime = events[j].querySelector("dt").innerHTML;
-                    let eventInfo = events[j].querySelector("dd").innerHTML.replace("<b>", "")
-                        .replace("</b>", "")
-                        .replace("<p>", "")
-                        .replace("</p>", "")
-                        .split("<br>")
-                        .filter(function(a) {
-                            return a != null && a.length > 1;
+    try {
+        const browser = await puppeteer.launch();
+        const page = await browser.newPage();
+        await page.goto("https://lukkarit.tamk.fi");
+        await page.type("#sgrp", luokka);
+        await page.click("#groupSearchForm fieldset center input");
+        let days = [];
+        let iterations = 0;
+        while(days.length < 1 && iterations < 5) {
+            await util.delay(DELAY_TIME);
+            days = await page.evaluate(() => {
+                const cols = document.querySelectorAll(".cl-colevents");
+                let ret = [];
+                cols.forEach(function(col, i) {
+                    ret[i] = {};
+                    ret[i].longest = 27;
+                    const day = cols[i].getAttribute("clday");
+                    ret[i].day = day;
+                    ret[i].events = [];
+                    const events = cols[i].querySelectorAll(".cl-event");
+                    events.forEach(function(event, j) {
+                        const eventTime = events[j].querySelector("dt").innerHTML;
+                        let eventInfo = events[j].querySelector("dd").innerHTML.replace("<b>", "")
+                            .replace("</b>", "")
+                            .replace("<p>", "")
+                            .replace("</p>", "")
+                            .split("<br>")
+                            .filter(function(a) {
+                                return a != null && a.length > 1;
+                            });
+                        eventInfo.forEach(function(e, index) {
+                            if(e.length > 25) {
+                                eventInfo[index] = e.substring(0, 25);
+                                eventInfo[index] += ".."; 
+                            }
                         });
-                    eventInfo.forEach(function(e, index) {
-                        if(e.length > 25) {
-                            eventInfo[index] = e.substring(0, 25);
-                            eventInfo[index] += ".."; 
-                        }
+                        
+                        ret[i].events.push({time: eventTime, info: eventInfo});
                     });
-                    
-                    ret[i].events.push({time: eventTime, info: eventInfo});
                 });
+                return ret;
             });
-            return ret;
-        });
-        iterations++;
-    }   
-    if(days && days != [] && days.length > 1) {
-        if(util.showWebsite(req.device.type)) {
-            res.render('sched', {content: days});
+            iterations++;
+        }   
+        if(days && days != [] && days.length > 1) {
+            if(util.showWebsite(req.device.type)) {
+                res.render('sched', {content: days});
+            } else {
+                const cleaned = util.cleanSchedule(days);
+                res.send(cleaned);
+            }
         } else {
-            const cleaned = util.cleanSchedule(days);
-            res.send(cleaned);
+            if(util.showWebsite(req.device.type)) {
+                res.render('sched', {content: []});
+            } else 
+                res.send("Request timed out. Did you use the correct class ID?\n");
         }
-    } else {
-        if(util.showWebsite(req.device.type)) {
-            res.render('sched', {content: []});
-        } else 
-            res.send("Request timed out. Did you use the correct class ID?\n");
+    } catch(e) {
+        res.status(500).send('Something went wrong.')
     }
+    
 });
 
 module.exports = router;
