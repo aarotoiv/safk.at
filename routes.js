@@ -33,7 +33,10 @@ router.get('/:class', async (req, res) => {
     const luokka = req.params.class;
     const DELAY_TIME = 500;
     try {
-        const browser = await puppeteer.launch();
+        const browser = await puppeteer.launch({
+            headless: true,
+            args: ['--no-sandbox']
+        });
         const page = await browser.newPage();
         await page.goto("https://lukkarit.tamk.fi");
         await page.type("#sgrp", luokka);
@@ -90,6 +93,7 @@ router.get('/:class', async (req, res) => {
                 res.send("Request timed out. Did you use the correct class ID?\n");
         }
     } catch(e) {
+        console.log(e);
         res.status(500).send('Something went wrong.')
     }
     
