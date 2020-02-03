@@ -81,6 +81,7 @@ router.get('/:class', async (req, res) => {
         }   
         if(days && days != [] && days.length > 1) {
             if(util.showWebsite(req.device.type)) {
+                await page.close();
                 await browser.close();
                 res.render('sched', {content: days});
             } else {
@@ -88,6 +89,7 @@ router.get('/:class', async (req, res) => {
                 res.send(cleaned);
             }
         } else {
+            await page.close();
             await browser.close();
             if(util.showWebsite(req.device.type)) {
                 res.render('sched', {content: []});
@@ -95,6 +97,7 @@ router.get('/:class', async (req, res) => {
                 res.send("Request timed out. Did you use the correct class ID?\n");
         }
     } catch(e) {
+        await page.close();
         await browser.close();
         console.log(e);
         res.status(500).send('Something went wrong.')
