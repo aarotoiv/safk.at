@@ -95,6 +95,7 @@ router.get('/:class', async (req, res) => {
                 res.send("Request timed out. Did you use the correct class ID?\n");
         }
     } catch(e) {
+        await browser.close();
         console.log(e);
         res.status(500).send('Something went wrong.')
     }
