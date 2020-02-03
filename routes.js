@@ -80,9 +80,9 @@ router.get('/:class', async (req, res) => {
             iterations++;
         }   
         if(days && days != [] && days.length > 1) {
+            await page.close();
+            await browser.close();
             if(util.showWebsite(req.device.type)) {
-                await page.close();
-                await browser.close();
                 res.render('sched', {content: days});
             } else {
                 const cleaned = util.cleanSchedule(days);
