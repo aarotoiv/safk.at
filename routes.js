@@ -81,12 +81,14 @@ router.get('/:class', async (req, res) => {
         }   
         if(days && days != [] && days.length > 1) {
             if(util.showWebsite(req.device.type)) {
+                await browser.close();
                 res.render('sched', {content: days});
             } else {
                 const cleaned = util.cleanSchedule(days);
                 res.send(cleaned);
             }
         } else {
+            await browser.close();
             if(util.showWebsite(req.device.type)) {
                 res.render('sched', {content: []});
             } else 
