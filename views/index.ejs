@@ -39,7 +39,7 @@
                 margin-bottom: 5px;
             }
         </style>
-        <% if(content.headers.length > 0) { %>
+        <% if(content && content.headers && content.headers.length > 0) { %>
             <div id="safka-container">
                 <% for(var i=0; i < content.everything.length; i++) { %>
                     <% if(content.headers.includes(content.everything[i])) {%>

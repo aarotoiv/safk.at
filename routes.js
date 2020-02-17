@@ -9,26 +9,34 @@ const router = new express.Router();
 const Cache = require('./cache');
 const cacheInst = new Cache();
 
-router.get('/', (req, res) => {
-    osmosis
-    .get('https://www.campusravita.fi/fi/ravintolat-ja-kahvila')
-    .find('.view-ruokalista')
-    .set({
-        headers: ['h3'],
-        everything: ['h3, div.views-row']
-    })
-    .data(content => {
-        //debug data
-        //content.headers = ["aa", "aaa", "aaaa", "aaaaa", "aaaa aaaa"];
-        //content.everything = ["aa", "kysta", "asdfasfdasdf", "aaa", "mitä", "asdfasdfasdfasdf", "hehe", "aaaa", "juju", "jaja", "jooo", "aaaaa", "heheheh", "hehehehehheee", "heheheheee", "aaaa aaaa", "huuu", "haaa"];
-
-        
+router.get('/', cacheInst.seekExistingMenu, (req, res) => { 
+    if(req.existingMenu) {
+        const content = req.existingMenu;
         if(util.showWebsite(req.device.type)) {
             res.render('index', {content: content});
         } else {
             res.send(content.headers.length > 0 ? util.cleanMenu(content) : "No menu available.\n");
         }
-    });
+    } else {
+        osmosis
+        .get('https://www.campusravita.fi/fi/ravintolat-ja-kahvila')
+        .find('.view-ruokalista')
+        .set({
+            headers: ['h3'],
+            everything: ['h3, div.views-row']
+        })
+        .data(content => {
+            //debug data
+            //content.headers = ["aa", "aaa", "aaaa", "aaaaa", "aaaa aaaa"];
+            //content.everything = ["aa", "kysta", "asdfasfdasdf", "aaa", "mitä", "asdfasdfasdfasdf", "hehe", "aaaa", "juju", "jaja", "jooo", "aaaaa", "heheheh", "hehehehehheee", "heheheheee", "aaaa aaaa", "huuu", "haaa"];
+            cacheInst.saveMenu(content);
+            if(util.showWebsite(req.device.type)) {
+                res.render('index', {content: content});
+            } else {
+                res.send(content.headers.length > 0 ? util.cleanMenu(content) : "No menu available.\n");
+            }
+        });
+    }
     
 });
 
@@ -95,7 +103,7 @@ router.get('/:class', cacheInst.seekExistingPlan, async (req, res) => {
 
         if(days && days != [] && days.length > 1) {
             if(!req.existingData) 
-                cacheInst.saveData(luokka, days);
+                cacheInst.savePlan(luokka, days);
 
             if(util.showWebsite(req.device.type)) {
                 res.render('sched', {content: days});
