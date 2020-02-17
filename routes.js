@@ -35,10 +35,10 @@ router.get('/', (req, res) => {
 router.get('/:class', cacheInst.seekExistingPlan, async (req, res) => {
     const luokka = req.params.class;
     const DELAY_TIME = 500;
+    let browser;
+    let page;
     try {
         let days = [];
-        let browser;
-        let page;
         if(req.existingData) {
             days = req.existingData;
         } else {
