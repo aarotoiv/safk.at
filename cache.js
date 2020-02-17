@@ -3,7 +3,6 @@ const NodeCache = require('node-cache');
 class Cache {
     constructor() {
         this.cache = new NodeCache({stdTTL: 43200});
-        this.khyst = "asdf";
     }
     seekExistingPlan = (req, res, next) => {
         if(this && this.cache) {
