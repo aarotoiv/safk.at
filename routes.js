@@ -37,14 +37,16 @@ router.get('/:class', cacheInst.seekExistingPlan, async (req, res) => {
     const DELAY_TIME = 500;
     try {
         let days = [];
+        let browser;
+        let page;
         if(req.existingData) {
             days = req.existingData;
         } else {
-            const browser = await puppeteer.launch({
+            browser = await puppeteer.launch({
                 headless: true,
                 args: ['--no-sandbox']
             });
-            const page = await browser.newPage();
+            page = await browser.newPage();
             await page.goto("https://lukkarit.tamk.fi");
             await page.type("#sgrp", luokka);
             await page.click("#groupSearchForm fieldset center input");
