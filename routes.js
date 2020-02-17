@@ -1,7 +1,7 @@
 const express = require('express');
 const osmosis = require('osmosis');
 const puppeteer = require('puppeteer');
-const sizeof = require('object-sizeof');
+//const sizeof = require('object-sizeof');
 const util = require('./util');
 
 const router = new express.Router();
