@@ -47,7 +47,7 @@ router.get('/', cacheInst.seekExistingMenu, (req, res) => {
 });
 
 router.get('/:class', cacheInst.seekExistingPlan, async (req, res) => {
-    const forceJson = req.query && req.query.json == true;
+    const forceJson = req.query.json == 'true';
     const luokka = req.params.class;
     const DELAY_TIME = 500;
     let browser;
