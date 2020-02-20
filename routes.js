@@ -10,6 +10,8 @@ const Cache = require('./cache');
 const cacheInst = new Cache();
 
 router.get('/', cacheInst.seekExistingMenu, (req, res) => { 
+    const forceJson = req.query && req.query.json == true;
+
     if(req.existingMenu) {
         const content = req.existingMenu;
         if(util.showWebsite(req.device.type)) {
@@ -30,7 +32,9 @@ router.get('/', cacheInst.seekExistingMenu, (req, res) => {
             //content.headers = ["aa", "aaa", "aaaa", "aaaaa", "aaaa aaaa"];
             //content.everything = ["aa", "kysta", "asdfasfdasdf", "aaa", "mitä", "asdfasdfasdfasdf", "hehe", "aaaa", "juju", "jaja", "jooo", "aaaaa", "heheheh", "hehehehehheee", "heheheheee", "aaaa aaaa", "huuu", "haaa"];
             cacheInst.saveMenu(content);
-            if(util.showWebsite(req.device.type)) {
+            if(forceJson) {
+                res.json(content);
+            } else if(util.showWebsite(req.device.type)) {
                 res.render('index', {content: content});
             } else {
                 res.send(content.headers.length > 0 ? util.cleanMenu(content) : "No menu available.\n");
@@ -41,6 +45,7 @@ router.get('/', cacheInst.seekExistingMenu, (req, res) => {
 });
 
 router.get('/:class', cacheInst.seekExistingPlan, async (req, res) => {
+    const forceJson = req.query && req.query.json == true;
     const luokka = req.params.class;
     const DELAY_TIME = 500;
     let browser;
@@ -105,14 +110,18 @@ router.get('/:class', cacheInst.seekExistingPlan, async (req, res) => {
             if(!req.existingData) 
                 cacheInst.savePlan(luokka, days);
 
-            if(util.showWebsite(req.device.type)) {
+            if(forceJson) {
+                res.json(content);
+            } else if(util.showWebsite(req.device.type)) {
                 res.render('sched', {content: days});
             } else {
                 const cleaned = util.cleanSchedule(days);
                 res.send(cleaned);
             }
         } else {
-            if(util.showWebsite(req.device.type)) {
+            if(forceJson) {
+                res.json({});
+            } else if(util.showWebsite(req.device.type)) {
                 res.render('sched', {content: []});
             } else 
                 res.send("Request timed out. Did you use the correct class ID?\n");
