@@ -10,11 +10,13 @@ const Cache = require('./cache');
 const cacheInst = new Cache();
 
 router.get('/', cacheInst.seekExistingMenu, (req, res) => { 
-    const forceJson = req.query && req.query.json == true;
+    const forceJson = req.query.json == 'true';
 
     if(req.existingMenu) {
         const content = req.existingMenu;
-        if(util.showWebsite(req.device.type)) {
+        if(forceJson) {
+            res.json(content);
+        } else if(util.showWebsite(req.device.type)) {
             res.render('index', {content: content});
         } else {
             res.send(content.headers.length > 0 ? util.cleanMenu(content) : "No menu available.\n");
