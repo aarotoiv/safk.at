@@ -107,13 +107,13 @@ router.get('/:class', cacheInst.seekExistingPlan, async (req, res) => {
             await browser.close();
         }
         
-
+        
         if(days && days != [] && days.length > 1) {
             if(!req.existingData) 
                 cacheInst.savePlan(luokka, days);
 
             if(forceJson) {
-                res.json(content);
+                res.json(days);
             } else if(util.showWebsite(req.device.type)) {
                 res.render('sched', {content: days});
             } else {
