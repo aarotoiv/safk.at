@@ -18,7 +18,8 @@
     "morgan": "*",
     "node-cache": "^5.1.0",
     "osmosis": "^1.1.10",
-    "puppeteer": "*"
+    "puppeteer": "*",
+    "cors": "*"
   },
   "devDependencies": {
     "object-sizeof": "^1.5.2"
