@@ -1,6 +1,6 @@
 # safk.at
 ## What
-Web-server that returns daily school cafeteria offerings at Tampere University of Applied Sciences. 
+Web-server that returns daily school cafeteria offerings and schedules at Tampere University of Applied Sciences. 
 ## Why
 Yes
 ## Usage
