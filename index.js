@@ -85,4 +85,11 @@ io.sockets.on('connection', socket => {
             
     });
 
+    socket.on('message', data => {
+        if(mainController.id == socket.id) 
+            slaveController.emit('message', data);
+        else if(slaveController.id == socket.id)
+            mainController.emit('message', data);
+    });
+
 });
