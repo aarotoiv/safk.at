@@ -21,35 +21,49 @@ class LukkariBot {
     }
     // Add a class to the list of classes
     async addClass(classId) {
-        const val = await this.page.evaluate(async (classId) => {
-            const res = await fetch(`https://lukkarit.tamk.fi/rest/basket/0/group/${classId}`, {method: "POST"});
-            return res.json();
-        }, classId);
-        return val;
+        try {
+            const val = await this.page.evaluate(async (classId) => {
+                const res = await fetch(`https://lukkarit.tamk.fi/rest/basket/0/group/${classId}`, {method: "POST"});
+                return res.json();
+            }, classId);
+            return val;
+        } catch(e) {
+            return false;
+        }
+        
     }
     // Delete a class from the list of classes
     async deleteClass(classId) {
-        const val = await this.page.evaluate(async (classId) => {
-            const res = await fetch(`https://lukkarit.tamk.fi/rest/basket/0/group/${classId}`, {method: "DELETE"});
-            return res.json();
-        }, classId); 
-        return val;
+        try {
+            const val = await this.page.evaluate(async (classId) => {
+                const res = await fetch(`https://lukkarit.tamk.fi/rest/basket/0/group/${classId}`, {method: "DELETE"});
+                return res.json();
+            }, classId); 
+            return val;
+        } catch(e) {
+            return false;
+        }
+       
     }
     // Get the schedules for all active classes
     async getSched(from, to) {
-        const sched = await this.page.evaluate(async (dates) => {
-            const res = await fetch("https://lukkarit.tamk.fi/rest/basket/0/events", {
-                method: "POST",
-                mode: "cors",
-                credentials: "same-origin",
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({
-                    dateFrom: dates.from, dateTo: dates.to, eventType: "visible"
-                })
-            });
-            return res.json();
-        }, {from, to});
-        return sched;
+        try {
+            const sched = await this.page.evaluate(async (dates) => {
+                const res = await fetch("https://lukkarit.tamk.fi/rest/basket/0/events", {
+                    method: "POST",
+                    mode: "cors",
+                    credentials: "same-origin",
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        dateFrom: dates.from, dateTo: dates.to, eventType: "visible"
+                    })
+                });
+                return res.json();
+            }, {from, to});
+            return sched;
+        } catch(e) {
+            return [];
+        }
     }
 };
 

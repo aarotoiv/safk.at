@@ -1,7 +1,5 @@
 const express = require('express');
 const osmosis = require('osmosis');
-const puppeteer = require('puppeteer');
-//const sizeof = require('object-sizeof');
 const util = require('./util');
 
 const router = new express.Router();
@@ -33,7 +31,7 @@ router.get('/', cacheInst.seekExistingMenu, (req, res) => {
         }
     } else {
         osmosis
-        .get('https://www.campusravita.fi/fi/ravintolat-ja-kahvila')
+        .get('https://opiskelijanverkkokauppa.fi/fi/ruokalista')
         .find('.view-ruokalista')
         .set({
             headers: ['h3'],
@@ -43,13 +41,15 @@ router.get('/', cacheInst.seekExistingMenu, (req, res) => {
             //debug data
             //content.headers = ["aa", "aaa", "aaaa", "aaaaa", "aaaa aaaa"];
             //content.everything = ["aa", "kysta", "asdfasfdasdf", "aaa", "mitä", "asdfasdfasdfasdf", "hehe", "aaaa", "juju", "jaja", "jooo", "aaaaa", "heheheh", "hehehehehheee", "heheheheee", "aaaa aaaa", "huuu", "haaa"];
-            cacheInst.saveMenu(content);
-            if(forceJson) {
-                res.json(content);
-            } else if(util.showWebsite(req.device.type)) {
-                res.render('index', {content: content});
-            } else {
-                res.send(content.headers.length > 0 ? util.cleanMenu(content) : "No menu available.\n");
+            if (!res.headersSent) {
+                cacheInst.saveMenu(content);
+                if(forceJson) {
+                    res.json(content);
+                } else if(util.showWebsite(req.device.type)) {
+                    res.render('index', {content: content});
+                } else {
+                    res.send(content.headers.length > 0 ? util.cleanMenu(content) : "No menu available.\n");
+                }
             }
         });
     }
@@ -82,6 +82,7 @@ router.get('/:class', cacheInst.seekExistingPlan, async (req, res) => {
 
         let ret = {};
         sched.forEach((schedItem) => {
+            console.log(schedItem);
             const startDate = schedItem.start_date;
             const endDate = schedItem.end_date;
             const dateString = startDate.split(" ")[0];
@@ -91,15 +92,22 @@ router.get('/:class', cacheInst.seekExistingPlan, async (req, res) => {
                 ret[dateString].day = dateString;
                 ret[dateString].events = [];
             }
+            
             let eventInfo = {
                 startTime: startDate.split(" ")[1],
                 endTime: endDate.split(" ")[1],
                 time: startDate.split(" ")[1],
-                info: [
-                    schedItem.code[0],
-                    schedItem.subject
-                ]
+                info: []
             };
+
+            if (schedItem.code) {
+                schedItem.code.forEach(code => {
+                    eventInfo.info.push(code);
+                });
+            }
+
+            if (schedItem.subject) 
+                eventInfo.info.push(schedItem.subject);
             
             if (schedItem.location) {
                 schedItem.location.forEach(loc => {
