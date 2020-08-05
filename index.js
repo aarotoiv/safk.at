@@ -18,11 +18,21 @@ app.set('view engine', 'ejs');
 
 const bot = new LukkariBot();
 bot.initialize().then(_ => {
-    console.log("");
-    bot.addClass().then(res => {console.log("theres: ", res)}).catch(e => console.log(e));
+    bot.addClass("19TIETOB").then(_ => {
+        bot.getSched("2020-08-31", "2020-09-07")
+        .then(res => {
+            console.log("SCHEDULAR:", res);
+        })
+        .catch(err => {
+            console.log("ERR SCHED: ", err);
+        });
+    })
+    .catch(err => {
+        console.log("ERR ADD: ", err);
+    })
 })
 .catch(err => {
-    console.log(err);
+    console.log("ERR LAUNCH: ", err);
 });
 
 const ruoke = require('./routes');
