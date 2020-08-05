@@ -8,7 +8,16 @@ const router = new express.Router();
 
 const Cache = require('./cache');
 const cacheInst = new Cache();
-const axios = require('axios');
+
+const LukkariBot = require('./lukkaribot');
+
+const bot = new LukkariBot();
+bot.initialize().then(res => {
+    console.log("Bot initialized");
+})
+.catch(err => {
+    console.log(err);
+});
 
 router.get('/', cacheInst.seekExistingMenu, (req, res) => { 
     const forceJson = req.query.json == 'true';
@@ -48,124 +57,96 @@ router.get('/', cacheInst.seekExistingMenu, (req, res) => {
 });
 
 router.get('/:class', cacheInst.seekExistingPlan, async (req, res) => {
-    axios.post("https://lukkarit.tamk.fi/rest/groups", {
-        target: "group",
-        type: "name",
-        text: "20tietoa",
-        dateFrom: "",
-        dateTo: "",
-        filters: [],
-        show: true
-    })
-    .then(res => {
-        axios.post("https://lukkarit.tamk.fi/rest/basket/0/group/20TIETOA")
-        .then(res => {
-            axios.post("https://lukkarit.tamk.fi/rest/basket/0/events", {dateFrom: "2020-09-07", dateTo: "2020-09-14", eventType: "visible"})
-            .then(res => {
-                console.log(res.data);
-            })
-            .catch(err => {
-                console.log("ERROR: ", err);
-            });
-        })
-        .catch(err => {
-            console.log("ERROR: ", err);
-        })
-    })
-    .catch(err => {
-        console.log("ERROR: ", err);
-    });
-    /*const forceJson = req.query.json == 'true';
+    const forceJson = req.query.json == 'true';
     const luokka = req.params.class;
-    const DELAY_TIME = 500;
-    let browser;
-    let page;
-    try {
-        let days = [];
-        if(req.existingData) {
-            days = req.existingData;
-        } else {
-            browser = await puppeteer.launch({
-                headless: true,
-                args: ['--no-sandbox']
-            });
-            page = await browser.newPage();
-            await page.goto("https://lukkarit.tamk.fi");
-            await page.type("#sgrp", luokka);
-            await page.click("#groupSearchForm fieldset center input");
-    
-            let iterations = 0;
-            while(days.length < 1 && iterations < 5) {
-                await util.delay(DELAY_TIME);
-                days = await page.evaluate(() => {
-                    const cols = document.querySelectorAll(".cl-colevents");
-                    let ret = [];
-                    cols.forEach(function(col, i) {
-                        ret[i] = {};
-                        ret[i].longest = 27;
-                        const day = cols[i].getAttribute("clday");
-                        ret[i].day = day;
-                        ret[i].events = [];
-                        const events = cols[i].querySelectorAll(".cl-event");
-                        events.forEach(function(event, j) {
-                            const eventTime = events[j].querySelector("dt").innerHTML;
-                            let eventInfo = events[j].querySelector("dd").innerHTML.replace("<b>", "")
-                                .replace("</b>", "")
-                                .replace("<p>", "")
-                                .replace("</p>", "")
-                                .split("<br>")
-                                .filter(function(a) {
-                                    return a != null && a.length > 1;
-                                });
-                            eventInfo.forEach(function(e, index) {
-                                if(e.length > 25) {
-                                    eventInfo[index] = e.substring(0, 25);
-                                    eventInfo[index] += ".."; 
-                                }
-                            });
-                            
-                            ret[i].events.push({time: eventTime, info: eventInfo});
-                        });
-                    });
-                    return ret;
-                });
-                iterations++;
-            } 
-            await page.close();
-            await browser.close();
-        }
-        
-        
-        if(days && days != [] && days.length > 1) {
-            if(!req.existingData) 
-                cacheInst.savePlan(luokka, days);
 
-            if(forceJson) {
-                res.json(days);
-            } else if(util.showWebsite(req.device.type)) {
-                res.render('sched', {content: days});
-            } else {
-                const cleaned = util.cleanSchedule(days);
-                res.send(cleaned);
+    let days = req.existingData ? req.existingData : [];
+
+    if (days.length == 0) {
+        const today = new Date();
+        const from = String(today.getFullYear()) 
+            + "-"
+            + String(today.getMonth() + 1).padStart(2, '0')
+            + "-"
+            + String(today.getDate()).padStart(2, '0');
+        today.setDate(today.getDate() + 7);
+        const to = String(today.getFullYear()) 
+            + "-"
+            + String(today.getMonth() + 1).padStart(2, '0')
+            + "-"
+            + String(today.getDate()).padStart(2, '0');
+
+        await bot.addClass(luokka.toUpperCase());
+        const sched = await bot.getSched("2020-08-31", "2020-09-07");
+        await bot.deleteClass(luokka.toUpperCase());
+
+        let ret = {};
+        sched.forEach((schedItem) => {
+            const startDate = schedItem.start_date;
+            const endDate = schedItem.end_date;
+            const dateString = startDate.split(" ")[0];
+            if (!ret[dateString]) {
+                ret[dateString] = {};
+                ret[dateString].longest = 27;
+                ret[dateString].day = dateString;
+                ret[dateString].events = [];
             }
-        } else {
-            if(forceJson) {
-                res.json({});
-            } else if(util.showWebsite(req.device.type)) {
-                res.render('sched', {content: []});
-            } else 
-                res.send("Request timed out. Did you use the correct class ID?\n");
-        }
-    } catch(e) {
-        if(page)
-            await page.close();
-        if(browser)
-            await browser.close();
+            let eventInfo = {
+                startTime: startDate.split(" ")[1],
+                endTime: endDate.split(" ")[1],
+                time: startDate.split(" ")[1],
+                info: [
+                    schedItem.code[0],
+                    schedItem.subject
+                ]
+            };
             
-        console.log(e);
-        res.status(500).send('Something went wrong.')
+            if (schedItem.location) {
+                schedItem.location.forEach(loc => {
+                    eventInfo.info.push(loc.class);
+                });
+            }
+            
+            if (schedItem.reserved_for) {
+                schedItem.reserved_for.forEach(reserved => {
+                    eventInfo.info.push(reserved);
+                });
+            }
+            
+            eventInfo.info.forEach((info, i) => {
+                if (info.length > 25) {
+                    eventInfo.info[i] = info.substring(0, 25);
+                    eventInfo.info[i] += "..";
+                }
+            });
+
+            ret[dateString].events.push(eventInfo);
+            
+        });
+
+        days = Object.values(ret);
     }
-    */
+
+    if(days && days != [] && days.length > 1) {
+        if(!req.existingData) 
+            cacheInst.savePlan(luokka, days);
+
+        if(forceJson) {
+            res.json(days);
+        } else if(util.showWebsite(req.device.type)) {
+            res.render('sched', {content: days});
+        } else {
+            const cleaned = util.cleanSchedule(days);
+            res.send(cleaned);
+        }
+    } else {
+        if(forceJson) {
+            res.json({});
+        } else if(util.showWebsite(req.device.type)) {
+            res.render('sched', {content: []});
+        } else 
+            res.send("Did you use a correct classId?\n");
+    }
 });
 
 module.exports = router;

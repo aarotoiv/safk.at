@@ -4,9 +4,6 @@ const morgan = require('morgan');
 const device = require('express-device');
 const cors = require('cors');
 const app = express();
-const LukkariBot = require('./lukkaribot');
-
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
 app.use(cors());
 app.use(device.capture());
@@ -15,25 +12,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.set('view engine', 'ejs');
-
-const bot = new LukkariBot();
-bot.initialize().then(_ => {
-    bot.addClass("19TIETOB").then(_ => {
-        bot.getSched("2020-08-31", "2020-09-07")
-        .then(res => {
-            console.log("SCHEDULAR:", res);
-        })
-        .catch(err => {
-            console.log("ERR SCHED: ", err);
-        });
-    })
-    .catch(err => {
-        console.log("ERR ADD: ", err);
-    })
-})
-.catch(err => {
-    console.log("ERR LAUNCH: ", err);
-});
 
 const ruoke = require('./routes');
 app.use('/', ruoke);
