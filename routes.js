@@ -77,7 +77,7 @@ router.get('/:class', cacheInst.seekExistingPlan, async (req, res) => {
             + String(today.getDate()).padStart(2, '0');
 
         await bot.addClass(luokka.toUpperCase());
-        const sched = await bot.getSched("2020-08-31", "2020-09-07");
+        const sched = await bot.getSched(from, to);
         await bot.deleteClass(luokka.toUpperCase());
 
         let ret = {};
