@@ -1,6 +1,5 @@
 const puppeteer = require('puppeteer');
 const util = require('./util');
-const axios = require('axios');
 
 class LukkariBot {
     constructor() {
