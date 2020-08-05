@@ -14,7 +14,7 @@ bot.initialize().then(res => {
     console.log("Bot initialized");
 })
 .catch(err => {
-    console.log(err);
+    console.log("ERROR INITIALIZING BOT: ", err);
 });
 
 router.get('/', cacheInst.seekExistingMenu, (req, res) => { 
@@ -82,7 +82,6 @@ router.get('/:class', cacheInst.seekExistingPlan, async (req, res) => {
 
         let ret = {};
         sched.forEach((schedItem) => {
-            console.log(schedItem);
             const startDate = schedItem.start_date;
             const endDate = schedItem.end_date;
             const dateString = startDate.split(" ")[0];

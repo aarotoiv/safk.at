@@ -17,7 +17,6 @@ class LukkariBot {
         this.page = await this.browser.newPage();
         await this.page.goto("https://lukkarit.tamk.fi/#/schedule");
         await util.delay(1000);
-        console.log("Browser initialized");
     }
     // Add a class to the list of classes
     async addClass(classId) {
