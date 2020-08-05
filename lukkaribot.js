@@ -1,17 +1,5 @@
 const puppeteer = require('puppeteer');
 const util = require('./util');
-/* let days = [];
-        if(req.existingData) {
-            days = req.existingData;
-        } else {
-            browser = await puppeteer.launch({
-                headless: true,
-                args: ['--no-sandbox']
-            });
-            page = await browser.newPage();
-            await page.goto("https://lukkarit.tamk.fi");
-            await page.type("#sgrp", luokka);
-            await page.click("#groupSearchForm fieldset center input");*/
 
 class LukkariBot {
     constructor() {
@@ -38,7 +26,6 @@ class LukkariBot {
         await util.delay(1000);
         await this.page.click(".search-result-row .buttons .row-buttons-container button");
         await util.delay(2000);
-        //await this.page.click(".search-result-container .search-result-title ~ button");
         await util.delay(10000);
         const content = await this.page.evaluate(() => {
             const weeks = document.querySelectorAll(".fc-row.fc-week");
