@@ -4,6 +4,9 @@ const morgan = require('morgan');
 const device = require('express-device');
 const cors = require('cors');
 const app = express();
+const LukkariBot = require('./lukkaribot');
+
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
 app.use(cors());
 app.use(device.capture());
@@ -12,6 +15,15 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.set('view engine', 'ejs');
+
+const bot = new LukkariBot();
+bot.initialize().then(_ => {
+    console.log("");
+    bot.addClass().then(res => {console.log("theres: ", res)}).catch(e => console.log(e));
+})
+.catch(err => {
+    console.log(err);
+});
 
 const ruoke = require('./routes');
 app.use('/', ruoke);

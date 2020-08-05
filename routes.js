@@ -8,6 +8,7 @@ const router = new express.Router();
 
 const Cache = require('./cache');
 const cacheInst = new Cache();
+const axios = require('axios');
 
 router.get('/', cacheInst.seekExistingMenu, (req, res) => { 
     const forceJson = req.query.json == 'true';
@@ -47,7 +48,34 @@ router.get('/', cacheInst.seekExistingMenu, (req, res) => {
 });
 
 router.get('/:class', cacheInst.seekExistingPlan, async (req, res) => {
-    const forceJson = req.query.json == 'true';
+    axios.post("https://lukkarit.tamk.fi/rest/groups", {
+        target: "group",
+        type: "name",
+        text: "20tietoa",
+        dateFrom: "",
+        dateTo: "",
+        filters: [],
+        show: true
+    })
+    .then(res => {
+        axios.post("https://lukkarit.tamk.fi/rest/basket/0/group/20TIETOA")
+        .then(res => {
+            axios.post("https://lukkarit.tamk.fi/rest/basket/0/events", {dateFrom: "2020-09-07", dateTo: "2020-09-14", eventType: "visible"})
+            .then(res => {
+                console.log(res.data);
+            })
+            .catch(err => {
+                console.log("ERROR: ", err);
+            });
+        })
+        .catch(err => {
+            console.log("ERROR: ", err);
+        })
+    })
+    .catch(err => {
+        console.log("ERROR: ", err);
+    });
+    /*const forceJson = req.query.json == 'true';
     const luokka = req.params.class;
     const DELAY_TIME = 500;
     let browser;
@@ -137,7 +165,7 @@ router.get('/:class', cacheInst.seekExistingPlan, async (req, res) => {
         console.log(e);
         res.status(500).send('Something went wrong.')
     }
-    
+    */
 });
 
 module.exports = router;
