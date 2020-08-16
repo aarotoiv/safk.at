@@ -1,5 +1,5 @@
 const express = require('express');
-const osmosis = require('osmosis');
+const axios = require('axios');
 const util = require('./util');
 
 const router = new express.Router();
@@ -10,50 +10,71 @@ const cacheInst = new Cache();
 const LukkariBot = require('./lukkaribot');
 
 const bot = new LukkariBot();
-bot.initialize().then(res => {
+bot.initialize().then(_ => {
     console.log("Bot initialized");
 })
 .catch(err => {
     console.log("ERROR INITIALIZING BOT: ", err);
 });
 
-router.get('/', cacheInst.seekExistingMenu, (req, res) => { 
+router.get('/', cacheInst.seekExistingMenu, async (req, res) => { 
     const forceJson = req.query.json == 'true';
+    let content = {
+        headers: [],
+        everything: []
+    };
 
-    if(req.existingMenu) {
-        const content = req.existingMenu;
-        if(forceJson) {
-            res.json(content);
-        } else if(util.showWebsite(req.device.type)) {
-            res.render('index', {content: content});
-        } else {
-            res.send(content.headers.length > 0 ? util.cleanMenu(content) : "No menu available.\n");
-        }
-    } else {
-        osmosis
-        .get('https://opiskelijanverkkokauppa.fi/fi/ruokalista')
-        .find('.view-ruokalista')
-        .set({
-            headers: ['h3'],
-            everything: ['h3, div.views-row']
-        })
-        .data(content => {
-            //debug data
-            //content.headers = ["aa", "aaa", "aaaa", "aaaaa", "aaaa aaaa"];
-            //content.everything = ["aa", "kysta", "asdfasfdasdf", "aaa", "mitä", "asdfasdfasdfasdf", "hehe", "aaaa", "juju", "jaja", "jooo", "aaaaa", "heheheh", "hehehehehheee", "heheheheee", "aaaa aaaa", "huuu", "haaa"];
-            if (!res.headersSent) {
-                cacheInst.saveMenu(content);
-                if(forceJson) {
-                    res.json(content);
-                } else if(util.showWebsite(req.device.type)) {
-                    res.render('index', {content: content});
-                } else {
-                    res.send(content.headers.length > 0 ? util.cleanMenu(content) : "No menu available.\n");
+    if(req.existingMenu) 
+        content = req.existingMenu;
+    else {
+        try {
+            const res = await axios.get("http://fi.jamix.cloud/apps/menuservice/rest/haku/menu/97603/1?lang=fi")
+            if (res.data.length < 1 
+                || res.data[0].menuTypes.length < 1
+                || res.data[0].menuTypes[0].menus.length < 1) {
+                sendErr();
+                return;
+            }
+            const menuTypes = res.data[0].menuTypes;
+            const menu = menuTypes[0].menus[0];
+            
+            if (menu.days.length < 1) {
+                sendErr();
+                return;
+            }
+    
+            const today = new Date();
+            const dateForComp = String(today.getFullYear()) 
+                + String(today.getMonth() + 1).padStart(2, '0')
+                + String(today.getDate()).padStart(2, '0');
+            
+            for (menuItem of menu.days) {
+                if (menuItem.date == dateForComp) {
+                    menuItem.mealoptions.forEach(option => {
+                        content.headers.push(option.name);
+                        content.everything.push(option.name);
+    
+                        option.menuItems.forEach(item => {
+                            content.everything.push(item.name + " " + (item.diet ? item.diet : ""));
+                        });
+                    });
+                    break;
                 }
             }
-        });
+
+        } catch(err) {
+            sendErr();
+            return;
+        }
     }
-    
+
+    if(forceJson) {
+        res.json(content);
+    } else if(util.showWebsite(req.device.type)) {
+        res.render('index', {content: content});
+    } else {
+        res.send(content.headers.length > 0 ? util.cleanMenu(content) : "No menu available.\n");
+    }
 });
 
 router.get('/:class', cacheInst.seekExistingPlan, async (req, res) => {
