@@ -58,7 +58,8 @@ router.get('/', cacheInst.seekExistingMenu, async (req, res) => {
                         content.everything.push(option.name);
     
                         option.menuItems.forEach(item => {
-                            content.everything.push(item.name + " " + (item.diet ? item.diet : ""));
+                            console.log(item);
+                            content.everything.push(item.name + " " + (item.diets ? item.diets : ""));
                         });
                     });
                     break;
