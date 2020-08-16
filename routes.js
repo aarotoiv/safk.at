@@ -44,6 +44,9 @@ router.get('/', cacheInst.seekExistingMenu, async (req, res) => {
             }
     
             const today = new Date();
+            // Just doing this because server uses UTC time.
+            // CBA
+            today.setTime(today.getTime() + (3 * 60 * 60 * 1000));
             const dateForComp = String(today.getFullYear()) 
                 + String(today.getMonth() + 1).padStart(2, '0')
                 + String(today.getDate()).padStart(2, '0');
@@ -85,6 +88,7 @@ router.get('/:class', cacheInst.seekExistingPlan, async (req, res) => {
 
     if (days.length == 0) {
         const today = new Date();
+        today.setTime(today.getTime() + (3 * 60 * 60 * 1000));
         const from = String(today.getFullYear()) 
             + "-"
             + String(today.getMonth() + 1).padStart(2, '0')
