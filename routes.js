@@ -1,6 +1,7 @@
 const express = require('express');
 const axios = require('axios');
 const util = require('./util');
+const keys = require('./keys');
 
 const router = new express.Router();
 
@@ -58,7 +59,6 @@ router.get('/', cacheInst.seekExistingMenu, async (req, res) => {
                         content.everything.push(option.name);
     
                         option.menuItems.forEach(item => {
-                            console.log(item);
                             content.everything.push(item.name + " " + (item.diets ? item.diets : ""));
                         });
                     });
@@ -72,12 +72,29 @@ router.get('/', cacheInst.seekExistingMenu, async (req, res) => {
         }
     }
 
+    if (!req.existingMenu && content.headers && content.headers.length > 0) {
+        cacheInst.saveMenu(content);
+    }
+
     if(forceJson) {
         res.json(content);
     } else if(util.showWebsite(req.device.type)) {
         res.render('index', {content: content});
     } else {
         res.send(content.headers.length > 0 ? util.cleanMenu(content) : "No menu available.\n");
+    }
+});
+
+router.get('/source', cacheInst.getDoorOpen, (req, res) => {
+    if (req.query && req.query.secret) {
+        if (req.query.secret == keys.sourceSecret) {
+            cacheInst.saveDoorOpen(req.query.val);
+            res.send("updated");
+        } else {
+            res.send("nope.");
+        }
+    } else {
+        res.send(req.isDoorOpen == "true" ? "Door is open" : "Door is closed");
     }
 });
 

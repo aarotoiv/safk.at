@@ -31,6 +31,18 @@ class Cache {
             self.cache.set('menu', menu, 7200);
         }
     }
+    saveDoorOpen(val) {
+        if (self && self.cache) {
+            self.cache.set('sourceDoorOpen', val);
+        }
+    }
+    getDoorOpen(req, res, next) {
+        if (self && self.cache) {
+            const isDoorOpen = self.cache.get( 'sourceDoorOpen' );
+            req.isDoorOpen = isDoorOpen;
+        }
+        next();
+    }
 }
 
 module.exports = Cache;
