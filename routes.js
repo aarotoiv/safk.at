@@ -94,7 +94,13 @@ router.get('/source', cacheInst.getDoorOpen, (req, res) => {
             res.send("nope.");
         }
     } else {
-        res.send(req.isDoorOpen == "true" ? "Door is open" : "Door is closed");
+        console.log(req.isDoorOpen);
+        if (util.showWebsite(req.device.type)) {
+            res.render('source', { isDoorOpen: req.isDoorOpen == "true" });
+        } else {
+            res.send(req.isDoorOpen == "true" ? "Door is open" : "Door is closed");
+        }
+        
     }
 });
 
@@ -130,6 +136,7 @@ router.get('/:class', cacheInst.seekExistingPlan, async (req, res) => {
             const dateString = startDate.split(" ")[0];
             if (!ret[dateString]) {
                 ret[dateString] = {};
+                ret[dateString].todayDate = from;
                 ret[dateString].longest = 27;
                 ret[dateString].day = dateString;
                 ret[dateString].events = [];

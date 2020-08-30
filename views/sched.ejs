@@ -32,23 +32,46 @@
             }
             p {
                 color: #fff;
+                margin: 0;
+                margin-bottom: 5px;
+                font-size: 17px;
+            }
+            .event-time {
+                font-size: 20px;
+            }
+            .event-info-line {
+                width: 100%; 
+                word-wrap: break-word;
+            }
+            .event-info-line:last-child {
+                margin-bottom: 10px;
             }
             .block-date {
                 text-align:center;
                 font-size: 25px;
                 color: #fff;
+                margin-bottom: 20px;
             }
             .block-event {
                 margin-left: 10px;
                 margin-right: 10px;
                 width: calc(100% - 20px);
-                border-bottom: solid 5px #fff;
+                border-bottom: solid 1px #fff;
+                margin-bottom: 15px;
             }
             .block-event:last-child() {
                 border-bottom: none;
             }
             #no-sched {
                 color: #fff;
+            }
+            @media only screen and (max-width: 1200px) {
+                #schedule-container {
+                    width: 98% !important;
+                }
+            }
+            @media only screen and (max-width: 900px) {
+
             }
         </style>
         <% if(content.length > 0) { %>
@@ -57,9 +80,10 @@
                     <p class="block-date">
                         <%= content[i].day %>
                     </p> 
-                    <% for(var j = 0; j < content[i].events.length; j++) { %><div class="block-event">
+                    <% for(var j = 0; j < content[i].events.length; j++) { %>
+                    <div class="block-event">
                         <p class="event-time">
-                            <%= content[i].events[j].time %>
+                            <%= content[i].events[j].startTime %> - <%= content[i].events[j].endTime %>
                         </p>
                         <% for(var k = 0; k < content[i].events[j].info.length; k++) { %>
                             <p class="event-info-line">
@@ -72,6 +96,5 @@
         <% } else { %>
             <span id="no-sched">Request timed out. Did you use the correct class ID?</span>
         <% } %>
-        
     </body>
 </html>
