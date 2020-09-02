@@ -1,6 +1,7 @@
 <html>
     <head>
         <meta name="viewport" content="width=device-width,initial-scale=1.0">
+        <meta charset="utf-8">
         <title>
             lukkarit.
         </title>
@@ -65,18 +66,52 @@
             #no-sched {
                 color: #fff;
             }
+            .sched-nav-button {
+                position: absolute;
+                top: -10px;
+                width: 50px;
+                height: 50px;
+                z-index: 1;
+                display: none;
+                border: none;
+                background: transparent;
+                cursor: pointer;
+                color: #fff;
+                font-size: 30px;
+            }
+            #go-left {
+                left: 0;
+            }
+            #go-right {
+                right: 0;
+            }
+            .sched-nav-button.hidden {
+                display: none;
+            }
             @media only screen and (max-width: 1200px) {
                 #schedule-container {
                     width: 98% !important;
                 }
             }
             @media only screen and (max-width: 900px) {
-
+                .schedule-block {
+                    display: none;
+                }
+                .schedule-block.active {
+                    display: block !important; 
+                    width: 100%;
+                }
+                .sched-nav-button {
+                    display: block;
+                }
             }
         </style>
         <% if(content.length > 0) { %>
             <div id="schedule-container">
-                <% for(var i = 0; i < content.length; i++) { %><div class="schedule-block">
+                <button class="sched-nav-button" id="go-left" onclick="goLeft();"><</button>
+                <button class="sched-nav-button" id="go-right" onclick="goRight();">></button>
+                <% for(var i = 0; i < content.length; i++) { %>
+                    <div class="schedule-block" data-day="<%= content[i].day %>">
                     <p class="block-date">
                         <%= content[i].day %>
                     </p> 
@@ -96,5 +131,66 @@
         <% } else { %>
             <span id="no-sched">Request timed out. Did you use the correct class ID?</span>
         <% } %>
+        <script>
+            const content = "<%= JSON.stringify(content) %>";
+            const from = "<%= from %>";
+            const formatted = content.replaceAll(/&#34;/g, '"');
+            const parsed = JSON.parse(formatted);
+            const days = document.getElementsByClassName("schedule-block");
+            
+            let attrMatch = false;
+            for (let i = 0; i < days.length; i++) {
+                const day = days[i];
+                const attr = day.getAttribute("data-day");
+                if (attr === from) {
+                    day.classList.add("active");
+                    attrMatch = true;
+                
+                    if (i <= 0) 
+                        document.getElementById("go-left").classList.add("hidden");
+                    if (i >= days.length - 1) 
+                        document.getElementById("go-right").classList.add("hidden");
+
+                    break;
+                }
+            }   
+
+            if (!attrMatch && days[0])
+                days[0].classList.add("active");
+            
+            const goLeft = () => {
+                for (let i = 0; i < days.length; i++) {
+                    if (days[i].classList.contains("active") && i != 0) {
+                        days[i].classList.remove("active");
+                        days[i-1].classList.add("active");
+                    
+                        const goLeftBtn = document.getElementById("go-left");
+
+                        if (i-1 <= 0) 
+                            goLeftBtn.classList.add("hidden");
+                        
+                        break;
+                    }
+                }
+                document.getElementById("go-right").classList.remove("hidden");
+            };
+
+            const goRight = () => {
+                for (let i = 0; i < days.length; i++) {
+                    if (days[i].classList.contains("active") && i != (days.length - 1)) {
+                        days[i].classList.remove("active");
+                        days[i+1].classList.add("active");
+                        
+                        const goRightBtn = document.getElementById("go-right");
+
+                        if (i+1 >= days.length - 1) 
+                            goRightBtn.classList.add("hidden");
+
+                        break;
+                    }
+                }
+                document.getElementById("go-left").classList.remove("hidden");
+            };
+        </script>
     </body>
 </html>

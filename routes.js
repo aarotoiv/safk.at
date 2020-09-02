@@ -52,23 +52,23 @@ router.get('/:class', cacheInst.seekExistingPlan, async (req, res) => {
     const forceJson = req.query.json == 'true';
     const luokka = req.params.class;
 
+    const today = new Date();
+    today.setTime(today.getTime() + (3 * 60 * 60 * 1000));
+    const from = String(today.getFullYear()) 
+        + "-"
+        + String(today.getMonth() + 1).padStart(2, '0')
+        + "-"
+        + String(today.getDate()).padStart(2, '0');
+    today.setDate(today.getDate() + 7);
+    const to = String(today.getFullYear()) 
+        + "-"
+        + String(today.getMonth() + 1).padStart(2, '0')
+        + "-"
+        + String(today.getDate()).padStart(2, '0');
+
     let days = req.existingData ? req.existingData : [];
 
     if (days.length == 0) {
-        const today = new Date();
-        today.setTime(today.getTime() + (3 * 60 * 60 * 1000));
-        const from = String(today.getFullYear()) 
-            + "-"
-            + String(today.getMonth() + 1).padStart(2, '0')
-            + "-"
-            + String(today.getDate()).padStart(2, '0');
-        today.setDate(today.getDate() + 7);
-        const to = String(today.getFullYear()) 
-            + "-"
-            + String(today.getMonth() + 1).padStart(2, '0')
-            + "-"
-            + String(today.getDate()).padStart(2, '0');
-
         await bot.addClass(luokka.toUpperCase());
         const sched = await bot.getSched(from, to);
         await bot.deleteClass(luokka.toUpperCase());
@@ -82,7 +82,7 @@ router.get('/:class', cacheInst.seekExistingPlan, async (req, res) => {
     if (forceJson) 
         res.json(days);
     else if(util.misc.showWebsite(req.device.type))
-        res.render('sched', {content: days});
+        res.render('sched', { content: days, from, to });
     else 
         res.send(days.length > 0 ? util.sched.cleanSchedule(days) : "Did you use a correct classId?\n");
 });
