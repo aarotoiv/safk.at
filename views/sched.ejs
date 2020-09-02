@@ -14,6 +14,7 @@
                 font-family: 'Roboto Mono',monospace;
                 font-weight: normal;
                 font-style: normal; 
+                color: #fff;
             }
             #schedule-container {
                 width: 80%;
@@ -134,9 +135,10 @@
         <script>
             const content = "<%= JSON.stringify(content) %>";
             const from = "<%= from %>";
-            const formatted = content.replaceAll(/&#34;/g, '"');
+            const formatted = content.replace(/&#34;/gi, '"');
             const parsed = JSON.parse(formatted);
             const days = document.getElementsByClassName("schedule-block");
+
             
             let attrMatch = false;
             for (let i = 0; i < days.length; i++) {
@@ -145,12 +147,12 @@
                 if (attr === from) {
                     day.classList.add("active");
                     attrMatch = true;
-                
+
                     if (i <= 0) 
                         document.getElementById("go-left").classList.add("hidden");
                     if (i >= days.length - 1) 
                         document.getElementById("go-right").classList.add("hidden");
-
+                    
                     break;
                 }
             }   
