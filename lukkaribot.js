@@ -1,5 +1,5 @@
 const puppeteer = require('puppeteer');
-const util = require('./util');
+const { misc }= require('./util');
 
 class LukkariBot {
     constructor() {
@@ -15,7 +15,7 @@ class LukkariBot {
         });
         this.page = await this.browser.newPage();
         await this.page.goto("https://lukkarit.tamk.fi/#/schedule");
-        await util.delay(1000);
+        await misc.delay(1000);
     }
     // Add a class to the list of classes
     async addClass(classId) {

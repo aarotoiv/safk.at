@@ -1,7 +1,6 @@
 const express = require('express');
-const axios = require('axios');
-const util = require('./util');
 const keys = require('./keys');
+const util = require('./util');
 
 const router = new express.Router();
 
@@ -9,7 +8,6 @@ const Cache = require('./cache');
 const cacheInst = new Cache();
 
 const LukkariBot = require('./lukkaribot');
-
 const bot = new LukkariBot();
 bot.initialize().then(_ => {
     console.log("Bot initialized");
@@ -20,69 +18,17 @@ bot.initialize().then(_ => {
 
 router.get('/', cacheInst.seekExistingMenu, async (req, res) => { 
     const forceJson = req.query.json == 'true';
-    let content = {
-        headers: [],
-        everything: []
-    };
+    const content = req.existingMenu || await util.menu.fetchMenu();
 
-    if(req.existingMenu) 
-        content = req.existingMenu;
-    else {
-        try {
-            const res = await axios.get("http://fi.jamix.cloud/apps/menuservice/rest/haku/menu/97603/1?lang=fi")
-            if (res.data.length < 1 
-                || res.data[0].menuTypes.length < 1
-                || res.data[0].menuTypes[0].menus.length < 1) {
-                sendErr();
-                return;
-            }
-            const menuTypes = res.data[0].menuTypes;
-            const menu = menuTypes[0].menus[0];
-            
-            if (menu.days.length < 1) {
-                sendErr();
-                return;
-            }
-    
-            const today = new Date();
-            // Just doing this because server uses UTC time.
-            // CBA
-            today.setTime(today.getTime() + (3 * 60 * 60 * 1000));
-            const dateForComp = String(today.getFullYear()) 
-                + String(today.getMonth() + 1).padStart(2, '0')
-                + String(today.getDate()).padStart(2, '0');
-            
-            for (menuItem of menu.days) {
-                if (menuItem.date == dateForComp) {
-                    menuItem.mealoptions.forEach(option => {
-                        content.headers.push(option.name);
-                        content.everything.push(option.name);
-    
-                        option.menuItems.forEach(item => {
-                            content.everything.push(item.name + " " + (item.diets ? item.diets : ""));
-                        });
-                    });
-                    break;
-                }
-            }
-
-        } catch(err) {
-            sendErr();
-            return;
-        }
-    }
-
-    if (!req.existingMenu && content.headers && content.headers.length > 0) {
+    if (!req.existingMenu && content.headers && content.headers.length > 0) 
         cacheInst.saveMenu(content);
-    }
 
-    if(forceJson) {
+    if(forceJson) 
         res.json(content);
-    } else if(util.showWebsite(req.device.type)) {
+    else if(util.misc.showWebsite(req.device.type))
         res.render('index', {content: content});
-    } else {
-        res.send(content.headers.length > 0 ? util.cleanMenu(content) : "No menu available.\n");
-    }
+    else
+        res.send(content.headers.length > 0 ? util.menu.cleanMenu(content) : "No menu available.\n");
 });
 
 router.get('/source', cacheInst.getDoorOpen, (req, res) => {
@@ -94,13 +40,11 @@ router.get('/source', cacheInst.getDoorOpen, (req, res) => {
             res.send("nope.");
         }
     } else {
-        console.log(req.isDoorOpen);
-        if (util.showWebsite(req.device.type)) {
+        if (util.misc.showWebsite(req.device.type)) {
             res.render('source', { isDoorOpen: req.isDoorOpen == "true" });
         } else {
-            res.send(req.isDoorOpen == "true" ? "Door is open" : "Door is closed");
+            res.send(req.isDoorOpen == "true" ? "Door is open\n" : "Door is closed\n");
         }
-        
     }
 });
 
@@ -129,81 +73,18 @@ router.get('/:class', cacheInst.seekExistingPlan, async (req, res) => {
         const sched = await bot.getSched(from, to);
         await bot.deleteClass(luokka.toUpperCase());
 
-        let ret = {};
-        sched.forEach((schedItem) => {
-            const startDate = schedItem.start_date;
-            const endDate = schedItem.end_date;
-            const dateString = startDate.split(" ")[0];
-            if (!ret[dateString]) {
-                ret[dateString] = {};
-                ret[dateString].todayDate = from;
-                ret[dateString].longest = 27;
-                ret[dateString].day = dateString;
-                ret[dateString].events = [];
-            }
-            
-            let eventInfo = {
-                startTime: startDate.split(" ")[1],
-                endTime: endDate.split(" ")[1],
-                time: startDate.split(" ")[1],
-                info: []
-            };
-
-            if (schedItem.code) {
-                schedItem.code.forEach(code => {
-                    eventInfo.info.push(code);
-                });
-            }
-
-            if (schedItem.subject) 
-                eventInfo.info.push(schedItem.subject);
-            
-            if (schedItem.location) {
-                schedItem.location.forEach(loc => {
-                    eventInfo.info.push(loc.class);
-                });
-            }
-            
-            if (schedItem.reserved_for) {
-                schedItem.reserved_for.forEach(reserved => {
-                    eventInfo.info.push(reserved);
-                });
-            }
-            
-            eventInfo.info.forEach((info, i) => {
-                if (info.length > 25) {
-                    eventInfo.info[i] = info.substring(0, 25);
-                    eventInfo.info[i] += "..";
-                }
-            });
-
-            ret[dateString].events.push(eventInfo);
-            
-        });
-
-        days = Object.values(ret);
+        days = util.sched.formatSchedule(sched, from);
     }
 
-    if(days && days != [] && days.length > 1) {
-        if(!req.existingData) 
-            cacheInst.savePlan(luokka, days);
+    if (!req.existingData && days.length > 0) 
+        cacheInst.savePlan(luokka, days);
 
-        if(forceJson) {
-            res.json(days);
-        } else if(util.showWebsite(req.device.type)) {
-            res.render('sched', {content: days});
-        } else {
-            const cleaned = util.cleanSchedule(days);
-            res.send(cleaned);
-        }
-    } else {
-        if(forceJson) {
-            res.json({});
-        } else if(util.showWebsite(req.device.type)) {
-            res.render('sched', {content: []});
-        } else 
-            res.send("Did you use a correct classId?\n");
-    }
+    if (forceJson) 
+        res.json(days);
+    else if(util.misc.showWebsite(req.device.type))
+        res.render('sched', {content: days});
+    else 
+        res.send(days.length > 0 ? util.sched.cleanSchedule(days) : "Did you use a correct classId?\n");
 });
 
 module.exports = router;
