@@ -52,19 +52,10 @@ router.get('/:class', cacheInst.seekExistingPlan, async (req, res) => {
     const forceJson = req.query.json == 'true';
     const luokka = req.params.class;
 
-    const today = new Date();
-    today.setTime(today.getTime() + (3 * 60 * 60 * 1000));
-    const from = String(today.getFullYear()) 
-        + "-"
-        + String(today.getMonth() + 1).padStart(2, '0')
-        + "-"
-        + String(today.getDate()).padStart(2, '0');
-    today.setDate(today.getDate() + 7);
-    const to = String(today.getFullYear()) 
-        + "-"
-        + String(today.getMonth() + 1).padStart(2, '0')
-        + "-"
-        + String(today.getDate()).padStart(2, '0');
+    const today = util.misc.getToday();
+    const from = util.misc.parseDateString(today);
+    const destDate = util.misc.addDays(today, 7);
+    const to = util.misc.parseDateString(destDate);
 
     let days = req.existingData ? req.existingData : [];
 
@@ -72,7 +63,6 @@ router.get('/:class', cacheInst.seekExistingPlan, async (req, res) => {
         await bot.addClass(luokka.toUpperCase());
         const sched = await bot.getSched(from, to);
         await bot.deleteClass(luokka.toUpperCase());
-
         days = util.sched.formatSchedule(sched, from);
     }
 

@@ -52,7 +52,10 @@
                 text-align:center;
                 font-size: 25px;
                 color: #fff;
-                margin-bottom: 20px;
+                margin-bottom: 25px;
+            }
+            .block-weekday {
+                text-align: center;
             }
             .block-event {
                 margin-left: 10px;
@@ -69,7 +72,7 @@
             }
             .sched-nav-button {
                 position: absolute;
-                top: -10px;
+                top: 0px;
                 width: 50px;
                 height: 50px;
                 z-index: 1;
@@ -113,9 +116,13 @@
                 <button class="sched-nav-button" id="go-right" onclick="goRight();">></button>
                 <% for(var i = 0; i < content.length; i++) { %>
                     <div class="schedule-block" data-day="<%= content[i].day %>">
+                    <p class="block-weekday">
+                        <%= content[i].weekDay %>
+                    </p>
                     <p class="block-date">
                         <%= content[i].day %>
                     </p> 
+
                     <% for(var j = 0; j < content[i].events.length; j++) { %>
                     <div class="block-event">
                         <p class="event-time">

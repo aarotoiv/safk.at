@@ -1,3 +1,5 @@
+const misc = require('./misc');
+
 module.exports = {
     formatSchedule: function(sched, from) {
         let ret = {};
@@ -9,7 +11,8 @@ module.exports = {
                 ret[dateString] = {};
                 ret[dateString].todayDate = from;
                 ret[dateString].longest = 27;
-                ret[dateString].day = dateString;
+                ret[dateString].weekDay = misc.getDayOfWeek(dateString);
+                ret[dateString].day = misc.prettifyDate(dateString);
                 ret[dateString].events = [];
             }
             
