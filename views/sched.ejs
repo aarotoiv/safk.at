@@ -200,6 +200,28 @@
                 }
                 document.getElementById("go-left").classList.remove("hidden");
             };
+
+            let touchStartX = -1;
+
+            const handleTouchStart = (evt) => {
+                touchStartX = evt.touches.length > 0 ? evt.touches[0].pageX : -1;
+            };
+
+            const handleTouchEnd = (evt) => {
+                if (touchStartX != -1 && evt.changedTouches.length > 0) {
+                    const deltaX = evt.changedTouches[0].pageX - touchStartX;
+                    if (deltaX <= -40) {
+                        goRight();
+                    } else if (deltaX >= 40) {
+                        goLeft();
+                    }
+                }
+            };
+
+            document.addEventListener('touchstart', handleTouchStart, false);
+            document.addEventListener('touchend', handleTouchEnd, false);
+
+
         </script>
     </body>
 </html>
