@@ -73,8 +73,13 @@ router.get('/:class', cacheInst.seekExistingPlan, async (req, res) => {
         res.json(days);
     else if(util.misc.showWebsite(req.device.type))
         res.render('sched', { content: days, from, to });
-    else 
-        res.send(days.length > 0 ? util.sched.cleanSchedule(days) : "Did you use a correct classId?\n");
+    else {
+        res.send(
+            days.length > 0 
+            ? util.sched.cleanSchedule(util.sched.limitInfoLength(days, 25)) 
+            : "Did you use a correct classId?\n"
+        );
+    }
 });
 
 module.exports = router;

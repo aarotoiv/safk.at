@@ -43,13 +43,6 @@ module.exports = {
                     eventInfo.info.push(reserved);
                 });
             }
-            
-            eventInfo.info.forEach((info, i) => {
-                if (info.length > 25) {
-                    eventInfo.info[i] = info.substring(0, 25);
-                    eventInfo.info[i] += "..";
-                }
-            });
 
             ret[dateString].events.push(eventInfo);
             
@@ -107,5 +100,16 @@ module.exports = {
             render += "\n";
         }
         return render;
+    },
+    limitInfoLength: function(days, lengthLimit) {
+        days.forEach(day => {
+            day.events.forEach(event => {
+                event.info.forEach((info, i) => {
+                    if (info.length > lengthLimit) 
+                        event.info[i] = info.substring(0, 25) + "..";
+                });
+            });
+        });
+        return days;
     }
 };
