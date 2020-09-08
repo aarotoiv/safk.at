@@ -60,6 +60,9 @@ router.get('/:class', cacheInst.seekExistingPlan, async (req, res) => {
     let days = req.existingData ? req.existingData : [];
 
     if (days.length == 0) {
+        if (bot.isUnavailable())
+            await bot.isAvailable();
+
         await bot.addClass(luokka.toUpperCase());
         const sched = await bot.getSched(from, to);
         await bot.deleteClass(luokka.toUpperCase());

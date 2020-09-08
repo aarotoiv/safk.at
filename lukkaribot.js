@@ -3,7 +3,7 @@ const { misc }= require('./util');
 
 class LukkariBot {
     constructor() {
-        this.unavailable = true;
+        this.unavailable = false;
         this.browser = null;
         this.page = null;
     }
@@ -19,6 +19,7 @@ class LukkariBot {
     }
     // Add a class to the list of classes
     async addClass(classId) {
+        this.unavailable = true;
         try {
             const val = await this.page.evaluate(async (classId) => {
                 const res = await fetch(`https://lukkarit.tamk.fi/rest/basket/0/group/${classId}`, {method: "POST"});
@@ -37,8 +38,10 @@ class LukkariBot {
                 const res = await fetch(`https://lukkarit.tamk.fi/rest/basket/0/group/${classId}`, {method: "DELETE"});
                 return res.json();
             }, classId); 
+            this.unavailable = false;
             return val;
         } catch(e) {
+            this.unavailable = false;
             return false;
         }
        
@@ -62,6 +65,16 @@ class LukkariBot {
         } catch(e) {
             return [];
         }
+    }
+
+    isUnavailable() {
+        return this.unavailable;
+    }
+
+    async isAvailable() {
+        while (this.unavailable)
+            await misc.delay(50);
+        return true;
     }
 };
 
