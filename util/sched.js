@@ -50,7 +50,6 @@ module.exports = {
             }
 
             ret[dateString].events.push(eventInfo);
-            console.log(eventInfo);
         });
 
         return Object.values(ret);
