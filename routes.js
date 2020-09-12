@@ -58,7 +58,7 @@ router.get('/:class', cacheInst.seekExistingPlan, async (req, res) => {
     const to = util.misc.parseDateString(destDate);
 
     let days = req.existingData ? req.existingData : [];
-
+    
     if (days.length == 0) {
         if (bot.isUnavailable())
             await bot.isAvailable();

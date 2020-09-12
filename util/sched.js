@@ -27,25 +27,30 @@ module.exports = {
                 schedItem.code.forEach(code => {
                     eventInfo.info.push(code);
                 });
+                eventInfo.code = schedItem.code;
             }
 
-            if (schedItem.subject) 
+            if (schedItem.subject) {
                 eventInfo.info.push(schedItem.subject);
+                eventInfo.subject = schedItem.subject;
+            }
             
             if (schedItem.location) {
                 schedItem.location.forEach(loc => {
                     eventInfo.info.push(loc.class);
                 });
+                eventInfo.location = schedItem.location;
             }
             
             if (schedItem.reserved_for) {
                 schedItem.reserved_for.forEach(reserved => {
                     eventInfo.info.push(reserved);
                 });
+                eventInfo.reserved_for = schedItem.reserved_for;
             }
 
             ret[dateString].events.push(eventInfo);
-            
+            console.log(eventInfo);
         });
 
         return Object.values(ret);
