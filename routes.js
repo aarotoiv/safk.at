@@ -18,8 +18,6 @@ bot.initialize().then(_ => {
 
 router.get('/', cacheInst.seekExistingMenu, async (req, res) => { 
     const forceJson = req.query.json !== undefined;
-    console.log(req.query);
-    console.log(forceJson);
     const content = req.existingMenu || await util.menu.fetchMenu();
 
     if (!req.existingMenu && content.headers && content.headers.length > 0) 
