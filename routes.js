@@ -17,7 +17,7 @@ bot.initialize().then(_ => {
 });
 
 router.get('/', cacheInst.seekExistingMenu, async (req, res) => { 
-    const forceJson = req.query.json !== undefined;
+    const forceJson = req.query.json !== undefined && req.query.json != "false";
     const content = req.existingMenu || await util.menu.fetchMenu();
 
     if (!req.existingMenu && content.headers && content.headers.length > 0) 
@@ -32,7 +32,7 @@ router.get('/', cacheInst.seekExistingMenu, async (req, res) => {
 });
 
 router.get('/source', cacheInst.getDoorOpen, (req, res) => {
-    const forceJson = req.query.json !== undefined;
+    const forceJson = req.query.json !== undefined && req.query.json != "false";
     if (req.query && req.query.secret) {
         if (req.query.secret == keys.sourceSecret) {
             cacheInst.saveDoorOpen(req.query.val);
@@ -54,7 +54,7 @@ router.get('/source', cacheInst.getDoorOpen, (req, res) => {
 });
 
 router.get('/:class', cacheInst.seekExistingPlan, async (req, res) => {
-    const forceJson = req.query.json !== undefined;
+    const forceJson = req.query.json !== undefined && req.query.json != "false";
     const luokka = req.params.class;
 
     const today = util.misc.getToday();
