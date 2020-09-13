@@ -17,7 +17,9 @@ bot.initialize().then(_ => {
 });
 
 router.get('/', cacheInst.seekExistingMenu, async (req, res) => { 
-    const forceJson = req.query.json == 'true';
+    const forceJson = req.query.json !== undefined;
+    console.log(req.query);
+    console.log(forceJson);
     const content = req.existingMenu || await util.menu.fetchMenu();
 
     if (!req.existingMenu && content.headers && content.headers.length > 0) 
@@ -32,6 +34,7 @@ router.get('/', cacheInst.seekExistingMenu, async (req, res) => {
 });
 
 router.get('/source', cacheInst.getDoorOpen, (req, res) => {
+    const forceJson = req.query.json !== undefined;
     if (req.query && req.query.secret) {
         if (req.query.secret == keys.sourceSecret) {
             cacheInst.saveDoorOpen(req.query.val);
@@ -40,7 +43,11 @@ router.get('/source', cacheInst.getDoorOpen, (req, res) => {
             res.send("nope.");
         }
     } else {
-        if (util.misc.showWebsite(req.device.type)) {
+        if (forceJson) {
+            res.json({
+                doorOpen: req.isDoorOpen == "true"
+            });
+        } else if (util.misc.showWebsite(req.device.type)) {
             res.render('source', { isDoorOpen: req.isDoorOpen == "true" });
         } else {
             res.send(req.isDoorOpen == "true" ? "Door is open\n" : "Door is closed\n");
@@ -49,7 +56,7 @@ router.get('/source', cacheInst.getDoorOpen, (req, res) => {
 });
 
 router.get('/:class', cacheInst.seekExistingPlan, async (req, res) => {
-    const forceJson = req.query.json == 'true';
+    const forceJson = req.query.json !== undefined;
     const luokka = req.params.class;
 
     const today = util.misc.getToday();
@@ -62,7 +69,6 @@ router.get('/:class', cacheInst.seekExistingPlan, async (req, res) => {
     if (days.length == 0) {
         if (bot.isUnavailable())
             await bot.isAvailable();
-
         await bot.addClass(luokka.toUpperCase());
         const sched = await bot.getSched(from, to);
         await bot.deleteClass(luokka.toUpperCase());
