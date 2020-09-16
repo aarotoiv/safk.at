@@ -34,7 +34,6 @@ router.get('/', cacheInst.seekExistingMenu, async (req, res) => {
 router.post('/source', (req, res) => {
     if (req.body && req.body.data) {
         try {
-            console.log(req.body.data);
             const data = req.body.data;
             const token = data.token;
             const value = data.val;
