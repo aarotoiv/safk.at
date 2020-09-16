@@ -34,15 +34,14 @@ router.get('/', cacheInst.seekExistingMenu, async (req, res) => {
 router.post('/source', (req, res) => {
     if (req.body && req.body.data) {
         try {
-            const data = req.body.data;
-            const token = data.token;
+            const data = JSON.parse(req.body.data);
+	  const token = data.token;
             const value = data.val;
             if (token === keys.sourceSecret) 
                 cacheInst.saveDoorOpen(value);
 
         } catch(err) {
             console.log(err);
-            res.sendStatus(400);
         } finally {
             res.sendStatus(200);
         }   
