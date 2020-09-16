@@ -43,11 +43,12 @@ router.post('/source', (req, res) => {
 
         } catch(err) {
             console.log(err);
+            res.sendStatus(400);
         } finally {
-            res.status(200);
+            res.sendStatus(200);
         }   
     } else {
-        res.status(400);
+        res.sendStatus(400);
     }
 });
 
