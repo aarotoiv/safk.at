@@ -35,10 +35,9 @@ router.post('/source', (req, res) => {
     if (req.body && req.body.data) {
         try {
             console.log(req.body.data);
-            const parsed = JSON.parse(req.body.data);
-            const token = parsed.token;
-            const value = parsed.val;
-            console.log(parsed);
+            const data = req.body.data;
+            const token = data.token;
+            const value = data.val;
             if (token === keys.sourceSecret) 
                 cacheInst.saveDoorOpen(value);
 
