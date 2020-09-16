@@ -32,13 +32,13 @@ router.get('/', cacheInst.seekExistingMenu, async (req, res) => {
 });
 
 router.post('/source', (req, res) => {
-    if (req.data && req.data.data) {
+    if (req.body && req.body.data) {
         try {
-            const parsed = JSON.parse(req.data.data);
+            const parsed = JSON.parse(req.body.data);
             const token = parsed.token;
             const value = parsed.val;
             console.log(parsed);
-            if (req.query.secter == keys.sourceSecret) 
+            if (token === keys.sourceSecret) 
                 cacheInst.saveDoorOpen(value);
 
         } catch(err) {
