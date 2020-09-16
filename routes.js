@@ -52,15 +52,14 @@ router.post('/source', (req, res) => {
 
 router.get('/source', cacheInst.getDoorOpen, (req, res) => {
     const forceJson = req.query.json !== undefined && req.query.json != "false";
-    if (forceJson) {
-        res.json({
-            doorOpen: req.isDoorOpen == "true"
-        });
-    } else if (util.misc.showWebsite(req.device.type)) {
+    
+    if (forceJson) 
+        res.json({ doorOpen: req.isDoorOpen == "true" });
+    else if (util.misc.showWebsite(req.device.type))
         res.render('source', { isDoorOpen: req.isDoorOpen == "true" });
-    } else {
+    else
         res.send(req.isDoorOpen == "true" ? "Door is open\n" : "Door is closed\n");
-    }
+    
 });
 
 router.get('/:class', cacheInst.seekExistingPlan, async (req, res) => {
