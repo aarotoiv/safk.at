@@ -31,6 +31,11 @@ router.get('/', cacheInst.seekExistingMenu, async (req, res) => {
         res.send(content.headers.length > 0 ? util.menu.cleanMenu(content) : "No menu available.\n");
 });
 
+router.post('/source', (req, res) => {
+    console.log(req.data);
+    res.status(200);
+});
+
 router.get('/source', cacheInst.getDoorOpen, (req, res) => {
     const forceJson = req.query.json !== undefined && req.query.json != "false";
     if (req.query && req.query.secret) {
