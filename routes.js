@@ -32,8 +32,23 @@ router.get('/', cacheInst.seekExistingMenu, async (req, res) => {
 });
 
 router.post('/source', (req, res) => {
-    console.log(req.data);
-    res.status(200);
+    if (req.data && req.data.data) {
+        try {
+            const parsed = JSON.parse(req.data.data);
+            const token = parsed.token;
+            const value = parsed.val;
+            console.log(parsed);
+            if (req.query.secter == keys.sourceSecret) 
+                cacheInst.saveDoorOpen(value);
+
+        } catch(err) {
+            console.log(err);
+        } finally {
+            res.status(200);
+        }   
+    } else {
+        res.status(400);
+    }
 });
 
 router.get('/source', cacheInst.getDoorOpen, (req, res) => {
