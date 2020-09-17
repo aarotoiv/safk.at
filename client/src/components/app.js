@@ -1,7 +1,7 @@
 import { h } from 'preact';
 import { Router } from 'preact-router';
 
-import Nav from './header';
+import Nav from './nav';
 
 import Menu from '../routes/menu';
 import Schedule from '../routes/schedule';
