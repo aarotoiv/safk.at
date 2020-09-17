@@ -31,26 +31,35 @@ router.get('/', cacheInst.seekExistingMenu, async (req, res) => {
         res.send(content.headers.length > 0 ? util.menu.cleanMenu(content) : "No menu available.\n");
 });
 
+router.post('/source', (req, res) => {
+    if (req.body && req.body.data) {
+        try {
+            const data = JSON.parse(req.body.data);
+	        const token = data.token;
+            const value = data.val;
+            if (token === keys.sourceSecret) 
+                cacheInst.saveDoorOpen(value);
+
+        } catch(err) {
+            console.log(err);
+        } finally {
+            res.sendStatus(200);
+        }   
+    } else {
+        res.sendStatus(400);
+    }
+});
+
 router.get('/source', cacheInst.getDoorOpen, (req, res) => {
     const forceJson = req.query.json !== undefined && req.query.json != "false";
-    if (req.query && req.query.secret) {
-        if (req.query.secret == keys.sourceSecret) {
-            cacheInst.saveDoorOpen(req.query.val);
-            res.send("updated");
-        } else {
-            res.send("nope.");
-        }
-    } else {
-        if (forceJson) {
-            res.json({
-                doorOpen: req.isDoorOpen == "true"
-            });
-        } else if (util.misc.showWebsite(req.device.type)) {
-            res.render('source', { isDoorOpen: req.isDoorOpen == "true" });
-        } else {
-            res.send(req.isDoorOpen == "true" ? "Door is open\n" : "Door is closed\n");
-        }
-    }
+    
+    if (forceJson) 
+        res.json({ doorOpen: req.isDoorOpen == "true" });
+    else if (util.misc.showWebsite(req.device.type))
+        res.render('source', { isDoorOpen: req.isDoorOpen == "true" });
+    else
+        res.send(req.isDoorOpen == "true" ? "Door is open\n" : "Door is closed\n");
+    
 });
 
 router.get('/:class', cacheInst.seekExistingPlan, async (req, res) => {
