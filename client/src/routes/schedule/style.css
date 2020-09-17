@@ -1,0 +1,100 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
+body {
+    background: #000;
+    font-family: 'Roboto Mono',monospace;
+    font-weight: normal;
+    font-style: normal; 
+    color: #fff;
+}
+.scheduleContainer {
+    width: 80%;
+    height: 100%;
+    margin: 50px auto;
+    position:relative;
+}
+.scheduleBlock {
+    width: 20%;
+    min-height: 500px;
+    height: auto;
+    float:left;
+    overflow:hidden;
+    margin: 0;
+    padding: 0;
+}
+p {
+    color: #fff;
+    margin: 0;
+    margin-bottom: 5px;
+    font-size: 17px;
+}
+.eventTime {
+    font-size: 20px;
+}
+.eventInfoLine {
+    width: 100%; 
+    word-wrap: break-word;
+}
+.eventInfoLine:last-child {
+    margin-bottom: 10px;
+}
+.blockDate {
+    text-align:center;
+    font-size: 25px;
+    color: #fff;
+    margin-bottom: 25px;
+}
+.blockWeekday {
+    text-align: center;
+}
+.blockEvent {
+    margin-left: 10px;
+    margin-right: 10px;
+    width: calc(100% - 20px);
+    border-bottom: solid 1px #fff;
+    margin-bottom: 15px;
+}
+.blockEvent:last-child() {
+    border-bottom: none;
+}
+.noSched {
+    color: #fff;
+}
+.schedNavButton {
+    position: absolute;
+    top: 0px;
+    width: 50px;
+    height: 50px;
+    z-index: 1;
+    display: hidden;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    color: #fff;
+    font-size: 30px;
+}
+.goLeft {
+    left: 0;
+}
+.goRight {
+    right: 0;
+}
+.schedNavButton.hidden {
+    display: none;
+}
+@media only screen and (max-width: 1200px) {
+    .scheduleContainer {
+        width: 98% !important;
+    }
+}
+@media only screen and (max-width: 900px) {
+    .scheduleBlock {
+        display: none;
+    }
+    .scheduleBlock.active {
+        display: block !important; 
+        width: 100%;
+    }
+    .schedNavButton {
+        display: block;
+    }
+}

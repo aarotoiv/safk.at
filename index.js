@@ -2,12 +2,14 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const device = require('express-device');
+const cors = require('cors');
 const app = express();
 
 app.use(device.capture());
 app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cors());
 
 app.set('view engine', 'ejs');
 
