@@ -5,22 +5,33 @@ import style from './style.css';
 
 const Menu = () => {
     const [ data, setData ] = useState({ headers: [], everything: [] });
+    const [ loading, setLoading ] = useState(true);
 
     useEffect(async () => {
         const menuData = await axios('http://localhost:5000?json');
-        console.log(menuData.data);
         setData(menuData.data);
+        setLoading(false);
     }, []);
 
-    return (
-        <div class={style.home}>
-		    {
-                data.headers.map((item) => {
-                    return <p>asd</p>
-                })
-            }
-	    </div>
-    );
+    if (loading)
+        return <></>;
+    else if (data.headers.length > 0) {
+        return (
+            <div class={style.menu}>
+                <div class={style.container}>
+                    {
+                        data.everything.map(item => {
+                            if (data.headers.includes(item))
+                                return <span class={style.header}>{ item }</span>;
+                            else
+                                return <span class={style.item}>{ item }</span>
+                        })
+                    }
+                </div>
+            </div>
+        );
+    } else
+        <span class={style.noMenu}>No menu available.</span>
 };
 
 export default Menu;

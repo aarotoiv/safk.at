@@ -46,11 +46,11 @@ const Schedule = ({ classId }) => {
                 onTouchEnd={(evt) => _onTouchEnd(evt)}>
                 <button class={`${style.schedNavButton} ${style.goLeft}` + (activeIndex <= 0 ? ` ${style.hidden}` : '')} 
                     onClick={() => changeActiveIndex(-1)}>
-                    &larr;
+                    &lt;
                 </button>
                 <button class={`${style.schedNavButton} ${style.goRight}` + (activeIndex >= (schedule.length - 1) ? ` ${style.hidden}` : '')} 
                     onClick={() => changeActiveIndex(1)}>
-                    &rarr;
+                    &gt;
                 </button>
                 {
                     schedule.map((day, i) => {

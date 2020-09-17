@@ -1,3 +1,39 @@
-.home {
-    color: gray;
+.menu {
+    width: 100%;
+    height: 100%;
+}
+.container {
+    position: relative;
+    margin: 10px 0px 0px 10px;
+    display:inline-block;
+    animation: menuEntry 0.2s ease-in-out forwards;
+    padding-bottom: 50px;
+}
+@keyframes menuEntry {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+span {
+    color: #ccc;
+    font-size: 16px;
+    display:block;
+    padding-right: 15px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+.header {
+    color: #fff;
+    font-size: 21px;
+    margin-bottom: 5px;
+    margin-top: 15px;
+}
+.header:first-child {
+    margin-top: 5px;
+}
+.item:last-child {
+    margin-bottom: 10px;
+}
+.noMenu {
+    color: #fff;
+    font-size: 30px;
 }
