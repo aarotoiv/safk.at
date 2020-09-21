@@ -3,7 +3,12 @@ const misc = require('./misc');
 const { openDataKey } = require('../keys');
 
 module.exports = {
-    fetchSchedule: async function(from, to, classId) {
+    fetchSchedule: async function(classId) {
+        const today = misc.getToday();
+        const from = today.toISOString();
+        const destDate = misc.addDays(today, 6);
+        const to = destDate.toISOString();
+
         const ret = await axios.post(`https://opendata.tamk.fi/r1/reservation/search?apiKey=${openDataKey}`, {
             startDate: from,
             endDate: to,
@@ -19,13 +24,13 @@ module.exports = {
             const reservationStart = new Date(reservation.startDate);
             const reservationEnd = new Date(reservation.endDate);
             
-            const reservationKey = reservationStart.getDay() + "-" + reservationStart.getMonth();
+            const reservationKey = reservationStart.getDate() + "-" + reservationStart.getMonth();
             
             if (!scheduleData[reservationKey]) {
                 scheduleData[reservationKey] = {
                     weekDay: misc.getDayOfWeek(reservation.startDate),
-                    day: String(reservationStart.getDay()).padStart(2, '0') + "." 
-                        + String(reservationStart.getMonth()).padStart(2, '0') + "." 
+                    day: String(reservationStart.getDate()).padStart(2, '0') + "." 
+                        + String(reservationStart.getMonth() + 1).padStart(2, '0') + "." 
                         + String(reservationStart.getFullYear()).padStart(2, '0'),
                     events: []
                 };

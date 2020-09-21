@@ -17,7 +17,7 @@ const Schedule = ({ classId }) => {
         if (!preactLocalStorage.get('safk-at-preferred-classid', false))
             route(`/group/?requestClassId=${classId}`);
         else {
-            const scheduleData = await axios.get(`http://localhost:5000/${classId}?json`);
+            const scheduleData = await axios.get(process.env.NODE_ENV === "production" ? `/api/${classId}` : `http://localhost:5000/api/${classId}`);
             setSchedule(scheduleData.data);
             setLoading(false);
         }

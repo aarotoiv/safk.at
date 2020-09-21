@@ -18,7 +18,7 @@ const App = () => {
 	const [ localSourceNav, setLocalSourceNav ] = useState(false);
 
 	setLocalClassId(preactLocalStorage.get('safk-at-preferred-classid', 'group'));
-	setLocalSourceNav(preactLocalStorage.get('safk-at-source-nav', false));
+	setLocalSourceNav(preactLocalStorage.get('safk-at-source-nav', 'false'));
 	
 	return (
 		<div id="app">

@@ -10,7 +10,7 @@ const Source = () => {
     const [ doorOpen, setDoorOpen ] = useState(false);
 
     useEffect(async () => {
-        const sourceData = await axios.get("http://localhost:5000/source?json");
+        const sourceData = await axios.get(process.env.NODE_ENV === "production" ? "/api/source" : "http://localhost:5000/api/source");
         setDoorOpen(sourceData.data.doorOpen);
         setLoading(false);
     }, [ setDoorOpen, setLoading ]);
