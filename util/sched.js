@@ -191,5 +191,18 @@ module.exports = {
             });
         });
         return days;
+    },
+    validClassId: function(classId) {
+        let valid = true;
+        if (typeof classId !== "string") {
+            valid = false;
+        } else {
+            if (classId.split(".").length > 1) 
+                valid = false;
+            
+            if (classId.length > 20)
+                valid = false;
+        }
+        return valid;
     }
 };

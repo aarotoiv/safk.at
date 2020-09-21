@@ -1,7 +1,6 @@
 const express = require('express');
 const keys = require('./keys');
 const util = require('./util');
-const axios = require('axios');
 const path = require('path');
 
 const router = new express.Router();
@@ -62,6 +61,11 @@ router.get('/:class', cacheInst.seekExistingPlan, async (req, res) => {
     const from = today.toISOString();
     const destDate = util.misc.addDays(today, 6);
     const to = destDate.toISOString();
+
+    if (!util.sched.validClassId(classId)) {
+        res.sendStatus(404);
+        return;
+    }
 
     const days = req.existingData 
         || util.sched.formatSchedule(await util.sched.fetchSchedule(from, to, classId));

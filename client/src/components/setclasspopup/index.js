@@ -13,7 +13,6 @@ const SetClassPopup = ({ setLocalClassId, setLocalSourceNav }) => {
         preactLocalStorage.set('safk-at-preferred-classid', classId);
         preactLocalStorage.set('safk-at-source-nav', sourceNav);
         setLocalClassId(classId);
-        console.log(sourceNav);
         setLocalSourceNav(sourceNav);
         route(`/${classId}`);
     };  

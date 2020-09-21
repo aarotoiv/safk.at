@@ -4,7 +4,6 @@ import style from './style.css';
 import { Home, Calendar, Code, Settings } from 'preact-feather';
 
 const Nav = ({ localClassId, localSourceNav }) => {
-
 	return (
 		<div class={style.navContainer}>
 			<div class={style.nav}>
@@ -15,7 +14,7 @@ const Nav = ({ localClassId, localSourceNav }) => {
 					<Calendar size={25} />
 				</button>
 				{
-					localSourceNav ? (
+					localSourceNav != "false" ? (
 						<button type="button" class={style.navItem} onClick={() => route("/source")}>
 							<Code size={25} />
 						</button>
