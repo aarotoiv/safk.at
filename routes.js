@@ -60,7 +60,7 @@ router.get('/:class', cacheInst.seekExistingPlan, async (req, res) => {
 
     const today = util.misc.getToday();
     const from = today.toISOString();
-    const destDate = util.misc.addDays(today, 7);
+    const destDate = util.misc.addDays(today, 6);
     const to = destDate.toISOString();
 
     const days = req.existingData 

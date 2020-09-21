@@ -16,8 +16,9 @@ app.use(cors());
 //const oldRoutes = require('./oldRoutes');
 //app.use('/api/v1', oldRoutes);
 const routes = require('./routes');
-app.use('/', routes);
 
+app.use('/', routes);
+app.use('/files', express.static(__dirname + '/files'));
 app.use('/static', express.static('client/build'));
 
 app.get('*', (req, res) => {

@@ -14,7 +14,7 @@ module.exports = {
     },
     formatSchedule: function(reservations) {
         let scheduleData = {};
-        
+
         reservations.forEach(reservation => {
             const reservationStart = new Date(reservation.startDate);
             const reservationEnd = new Date(reservation.endDate);
@@ -54,12 +54,17 @@ module.exports = {
                     });
                 } 
             });
-            if (eventInfo.realizations[0])
-                eventInfo.info.push(eventInfo.realizations[0].name);
 
-            eventInfo.realizations.forEach(realization => {
-                eventInfo.info.push(realization.code);
-            });
+            if (eventInfo.realizations[0]) {
+                eventInfo.info.push(eventInfo.realizations[0].name);
+                eventInfo.realizations.forEach(realization => {
+                    eventInfo.info.push(realization.code);
+                });
+            } else if (eventInfo.subject) {
+                eventInfo.info.push(eventInfo.subject);
+            }
+
+           
             eventInfo.locations.forEach(location => {
                 eventInfo.info.push(location.code);
             });
