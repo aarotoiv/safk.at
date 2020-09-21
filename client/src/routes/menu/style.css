@@ -1,13 +1,16 @@
 .menu {
+    position: relative;
     width: 100%;
-    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
 }
 .container {
     position: relative;
     margin: 10px 0px 0px 10px;
-    display:inline-block;
     animation: menuEntry 0.2s ease-in-out forwards;
     padding-bottom: 50px;
+    display: inline-block;
 }
 @keyframes menuEntry {
     from { opacity: 0; }
@@ -36,4 +39,6 @@ span {
 .noMenu {
     color: #fff;
     font-size: 30px;
+    line-height: 100vh;
+    text-align: center;
 }

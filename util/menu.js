@@ -3,8 +3,11 @@ const axios = require('axios');
 module.exports = {
     fetchMenu: async function() {
         let content = {
-            headers: [],
-            everything: []
+            simplified: {
+                headers: [],
+                everything: []
+            },
+            formatted: []
         };
     
         try {
@@ -34,12 +37,19 @@ module.exports = {
             for (menuItem of menu.days) {
                 if (menuItem.date == dateForComp) {
                     menuItem.mealoptions.forEach(option => {
-                        content.headers.push(option.name);
-                        content.everything.push(option.name);
+                        const mealOption = {
+                            header: option.name,
+                            items: []
+                        };
+                        content.simplified.headers.push(option.name);
+                        content.simplified.everything.push(option.name);
     
                         option.menuItems.forEach(item => {
-                            content.everything.push(item.name + " " + (item.diets ? item.diets : ""));
+                            const itemName = item.name + " " + (item.diets ? item.diets : "");
+                            mealOption.items.push(itemName);
+                            content.simplified.everything.push(itemName);
                         });
+                        content.formatted.push(mealOption);
                     });
                     break;
                 }

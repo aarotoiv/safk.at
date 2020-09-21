@@ -46,19 +46,27 @@ p {
 .blockEvent {
     margin-left: 10px;
     margin-right: 10px;
-    width: calc(100% - 20px);
-    border-bottom: solid 1px #fff;
+    width: calc(100% - 40px);
+    background: #0C0C0C;
+    border-radius: 5px;
     margin-bottom: 15px;
+    padding: 10px;
 }
 .blockEvent:last-child() {
     border-bottom: none;
 }
 .noSched {
+    display: block;
     color: #fff;
+    font-size: 30px;
+    text-align: center;
+    padding-top: 50vh;
+    max-width: 500px;
+    margin: 0 auto;
 }
 .schedNavButton {
     position: absolute;
-    top: 0px;
+    top: 50px;
     width: 50px;
     height: 50px;
     z-index: 1;

@@ -1,7 +1,76 @@
+const axios = require('axios');
 const misc = require('./misc');
+const { openDataKey } = require('../keys');
 
 module.exports = {
-    formatSchedule: function(sched, from) {
+    fetchSchedule: async function(from, to, classId) {
+        const ret = await axios.post(`https://opendata.tamk.fi/r1/reservation/search?apiKey=${openDataKey}`, {
+            startDate: from,
+            endDate: to,
+            studentGroup: [classId]
+        });
+    
+        return ret.data.reservations || [];
+    },
+    formatSchedule: function(reservations) {
+        let scheduleData = {};
+        
+        reservations.forEach(reservation => {
+            const reservationStart = new Date(reservation.startDate);
+            const reservationEnd = new Date(reservation.endDate);
+            
+            const reservationKey = reservationStart.getDay() + "-" + reservationStart.getMonth();
+            
+            if (!scheduleData[reservationKey]) {
+                scheduleData[reservationKey] = {
+                    weekDay: misc.getDayOfWeek(reservation.startDate),
+                    day: String(reservationStart.getDay()).padStart(2, '0') + "." 
+                        + String(reservationStart.getMonth()).padStart(2, '0') + "." 
+                        + String(reservationStart.getFullYear()).padStart(2, '0'),
+                    events: []
+                };
+            }
+
+            let eventInfo = {
+                startTime: String(reservationStart.getHours()).padStart(2, '0') + ":" + String(reservationStart.getMinutes()).padStart(2, '0'),
+                endTime: String(reservationEnd.getHours()).padStart(2, '0') + ":" + String(reservationEnd.getMinutes()).padStart(2, '0'),
+                time: String(reservationStart.getHours()).padStart(2, '0') + ":" + String(reservationStart.getMinutes()).padStart(2, '0'),
+                locations: [],
+                realizations: [],
+                subject: reservation.subject || null,
+                info: []
+            };
+
+            reservation.resources.forEach(resource => {
+                if (resource.type === 'room') {
+                    eventInfo.locations.push({
+                        code: resource.code || null,
+                        name: resource.name || null,
+                    });
+                } else if (resource.type === 'realization') {
+                    eventInfo.realizations.push({
+                        code: resource.code || null,
+                        name: resource.name || null
+                    });
+                } 
+            });
+            if (eventInfo.realizations[0])
+                eventInfo.info.push(eventInfo.realizations[0].name);
+
+            eventInfo.realizations.forEach(realization => {
+                eventInfo.info.push(realization.code);
+            });
+            eventInfo.locations.forEach(location => {
+                eventInfo.info.push(location.code);
+            });
+
+            scheduleData[reservationKey].events.push(eventInfo);
+        });
+
+        return Object.values(scheduleData);
+    },
+    // Not used anymore. Still here for reasons.
+    oldFormatSchedule: function(sched, from) {
         let ret = {};
         sched.forEach((schedItem) => {
             const startDate = schedItem.start_date;
@@ -57,10 +126,13 @@ module.exports = {
     cleanSchedule: function(days) {
         let cleaned = [];
         let mostRows = 0;
+
+        const longest = 27;
+
         days.forEach(function(day) {
             let titleDivider = "";
             let dayDivider = "";
-            for(let i = 0; i< day.longest; i++) {
+            for(let i = 0; i < longest; i++) {
                 titleDivider += "━";
                 dayDivider += "─";
             }
@@ -86,12 +158,11 @@ module.exports = {
             });
             if(rows > mostRows)
                 mostRows = rows;
-            cleaned.push({day: dayContent.split("\n"), longest: day.longest});
+            cleaned.push({day: dayContent.split("\n")});
         });
         let render = "";
         for(let i = 0; i<mostRows; i++) {
             for(let j = 0; j<cleaned.length; j++) {
-                const longest = cleaned[j].longest;
                 const line = cleaned[j].day[i];
                 const lineLength = line ? line.length : 0;
                 

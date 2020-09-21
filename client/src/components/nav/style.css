@@ -1,19 +1,20 @@
 .navContainer {
 	position: fixed;
 	width: 100%;
-	height: 40px;
+	height: 50px;
 	z-index: 99;
 	bottom: 0;
 	background: #000;
 }
 .nav {
 	position: relative;
-	margin: 10px auto 0px auto;
-	height: 20px;
-	width: 300px;
+	margin: 0px auto 5px auto;
+	height: 45px;
+	width: 600px;
+	max-width: 100%;
 	display: flex;
 	flex-direction: row;
-	justify-content: space-between;
+	justify-content: space-evenly;
 	opacity: 0;
 	animation: navEntry 0.4s linear forwards;
 }
@@ -24,19 +25,24 @@
 }
 .navItem {
 	display: block;
+	position: relative;
+	height: 45px;
 	color: #fff;
 	text-decoration: none;
-	line-height: 20px;
 	text-align: center;
-}
-.navItem:first-child {
+	padding-left: 10px;
+	padding-right: 10px;
+	background: transparent;
+	cursor:pointer;
 	border: none;
+	outline: none;
 }
 .border {
+	display: block;
 	background: #fff;
-	height: 100%;
-	width: 3px;
-	margin: 0;
+	height: 30px;
+	width: 2px;
+	margin: 10px 0px 10px 0px;
 	padding: 0;
 	border-radius: 2px;
 }

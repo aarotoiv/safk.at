@@ -2,6 +2,9 @@ import { h } from 'preact';
 import {useEffect, useState} from "preact/hooks";
 import axios from 'axios';
 import style from './style.css';
+import Loader from '../../components/loader';
+import { route } from 'preact-router';
+import preactLocalStorage from 'preact-localstorage';
 
 const Schedule = ({ classId }) => {
 
@@ -11,10 +14,14 @@ const Schedule = ({ classId }) => {
     const [ touchStartX, setTouchStartX ] = useState(-1);
 
 	useEffect(async () => {
-        const scheduleData = await axios.get(`http://localhost:5000/${classId}?json`);
-        setSchedule(scheduleData.data);
-        setLoading(false);
-    }, []);
+        if (!preactLocalStorage.get('safk-at-preferred-classid', false))
+            route(`/group/?requestClassId=${classId}`);
+        else {
+            const scheduleData = await axios.get(`http://localhost:5000/${classId}?json`);
+            setSchedule(scheduleData.data);
+            setLoading(false);
+        }
+    }, [ setSchedule, setLoading ]);
     
     const changeActiveIndex = val => {
         if (activeIndex + val > schedule.length - 1) 
@@ -37,9 +44,9 @@ const Schedule = ({ classId }) => {
         }
     };
 
-    if (loading) {
-        return <span id="loading">Loading</span>
-    } else if (schedule.length > 0) {
+    if (loading)
+        return <Loader />;
+    else if (schedule.length > 0) {
         return (
             <div class={style.scheduleContainer}
                 onTouchStart={(evt) => _onTouchStart(evt)}

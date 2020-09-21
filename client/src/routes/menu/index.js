@@ -2,36 +2,43 @@ import { h } from 'preact';
 import {useEffect, useState} from "preact/hooks";
 import axios from 'axios';
 import style from './style.css';
+import Loader from '../../components/loader';
 
 const Menu = () => {
     const [ data, setData ] = useState({ headers: [], everything: [] });
     const [ loading, setLoading ] = useState(true);
 
     useEffect(async () => {
-        const menuData = await axios('http://localhost:5000?json');
-        setData(menuData.data);
+        const { data } = await axios('http://localhost:5000/?json');
+        setData(data);
         setLoading(false);
-    }, []);
+    }, [ setData, setLoading ]);
 
     if (loading)
-        return <></>;
-    else if (data.headers.length > 0) {
+        return <Loader />;
+    else if (data.length > 0) {
         return (
             <div class={style.menu}>
                 <div class={style.container}>
                     {
-                        data.everything.map(item => {
-                            if (data.headers.includes(item))
-                                return <span class={style.header}>{ item }</span>;
-                            else
-                                return <span class={style.item}>{ item }</span>
+                        data.map(mealOption => {
+                            return (
+                                <div class={style.mealOption}>
+                                    <span class={style.header}>{ mealOption.header }</span>
+                                    {
+                                        mealOption.items.map(item => {
+                                            return <span class={style.item}>{ item }</span>
+                                        })
+                                    }
+                                </div>
+                            )
                         })
                     }
                 </div>
             </div>
         );
     } else
-        <span class={style.noMenu}>No menu available.</span>
+        return <span class={style.noMenu}>No menu available.</span>;
 };
 
 export default Menu;
