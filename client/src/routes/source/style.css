@@ -4,11 +4,16 @@
     position: relative;
     overflow: hidden;
 }
+@keyframes doorEntry {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
 .doorText {
     margin: 0;
     font-size: 25px;
     text-align: center;
     position: relative;
+    animation: doorEntry 0.2s ease-in-out forwards;
 }
 .doorText:hover:after {
     visibility: visible;
@@ -38,6 +43,7 @@
     background-size: cover;
     background-position: center center;
     margin: 50px auto;
+    animation: doorEntry 0.2s ease-in-out forwards;
 }
 .doorInner {
     position: absolute;

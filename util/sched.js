@@ -14,7 +14,7 @@ module.exports = {
             endDate: to,
             studentGroup: [classId]
         });
-    
+
         return ret.data.reservations || [];
     },
     formatSchedule: function(reservations) {
@@ -155,7 +155,7 @@ module.exports = {
             dayContent += "\n";
             rows += 2;
             day.events.forEach(function(event) {
-                dayContent += event.time;
+                dayContent += `${event.startTime} - ${event.endTime}`;
                 dayContent += "\n";
                 rows++;
                 event.info.forEach(function(infoLine) {

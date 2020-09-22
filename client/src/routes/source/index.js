@@ -17,16 +17,20 @@ const Source = () => {
 
     return (
         <div class={style.container}>
-		    <div class={`${style.door}` + (doorOpen ? `${style.open}` : '')}>
-                <div class={`${style.doorInner}`}></div>
-            </div>
             {
                 !loading ? (
-                    doorOpen ? (
-                        <p class={style.doorText}>Door is open</p>
-                    ) : (
-                        <p class={style.doorText}>Door is closed</p>
-                    )
+                    <>
+                        <div class={`${style.door}` + (doorOpen ? ` ${style.open}` : '')}>
+                            <div class={`${style.doorInner}`}></div>
+                        </div>
+                        {
+                            doorOpen ? (
+                                <p class={style.doorText}>Door is open</p>
+                            ) : (
+                                <p class={style.doorText}>Door is closed</p>
+                            )
+                        }
+                    </>
                 ) : (
                     <Loader />
                 )

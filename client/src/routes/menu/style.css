@@ -18,7 +18,7 @@
 }
 span {
     color: #ccc;
-    font-size: 16px;
+    font-size: calc(13px + 0.2vw);
     display:block;
     padding-right: 15px;
     margin-left: 10px;
@@ -26,7 +26,7 @@ span {
 }
 .header {
     color: #fff;
-    font-size: 21px;
+    font-size: calc(16px + 0.2vw);
     margin-bottom: 5px;
     margin-top: 15px;
 }
@@ -35,6 +35,9 @@ span {
 }
 .item:last-child {
     margin-bottom: 10px;
+}
+.mealOption {
+    margin-bottom: 15px;
 }
 .noMenu {
     color: #fff;
