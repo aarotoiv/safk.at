@@ -1,6 +1,7 @@
 {
   "name": "safkat",
   "short_name": "safkat",
+  "description": "Safkat ja lukkarit",
   "start_url": "/",
   "display": "standalone",
   "orientation": "portrait",

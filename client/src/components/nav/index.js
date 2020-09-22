@@ -7,20 +7,20 @@ const Nav = ({ localClassId, localSourceNav }) => {
 	return (
 		<div class={style.navContainer}>
 			<div class={style.nav}>
-				<button type="button" class={style.navItem} onClick={() => route("/")}>
+				<button aria-label="Home" type="button" class={style.navItem} onClick={() => route("/")}>
 					<Home size={25} />
 				</button>
-				<button type="button" class={style.navItem} onClick={() => route(localClassId ? `/${localClassId}` : "/group")}>
+				<button aria-label="Schedule" type="button" class={style.navItem} onClick={() => route(localClassId ? `/${localClassId}` : "/group")}>
 					<Calendar size={25} />
 				</button>
 				{
 					localSourceNav != "false" ? (
-						<button type="button" class={style.navItem} onClick={() => route("/source")}>
+						<button aria-label="Source" type="button" class={style.navItem} onClick={() => route("/source")}>
 							<Code size={25} />
 						</button>
 					) : <></>
 				}
-				<button type="button" class={style.navItem} onClick={() => route("/group")}>
+				<button aria-label="Settings" type="button" class={style.navItem} onClick={() => route("/group")}>
 					<Settings size={25} />
 				</button>
 			</div>

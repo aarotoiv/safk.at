@@ -29,7 +29,7 @@ const SetClassPopup = ({ setLocalClassId, setLocalSourceNav }) => {
                 </p>
                 <input type="text" value={classId} class={style.popUpInput} onChange={(evt) => setClassId(evt.target.value)}/>
                 <input type="checkbox" onChange={(evt) => setSourceNav(evt.target.checked)} class={style.check} /><span class={style.checkText}>Add /source to the navigation</span>
-                <button class={style.popUpButton} onClick={() => _onClick()}>Save</button>
+                <button aria-label="Save Settings" type="button" class={style.popUpButton} onClick={() => _onClick()}>Save</button>
             </div>
         </div>
     );
