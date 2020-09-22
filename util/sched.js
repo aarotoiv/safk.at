@@ -4,22 +4,21 @@ const { openDataKey } = require('../keys');
 
 module.exports = {
     fetchSchedule: async function(classId) {
-        const today = misc.getToday();
-        const from = today.toISOString();
-        const destDate = misc.addDays(today, 6);
-        const to = destDate.toISOString();
-        
-        let ret;
         try {
-            ret = await axios.post(`https://opendata.tamk.fi/r1/reservation/search?apiKey=${openDataKey}`, {
+            const today = misc.getToday();
+            const from = today.toISOString();
+            const destDate = misc.addDays(today, 6);
+            const to = destDate.toISOString();
+            
+            const ret = await axios.post(`https://opendata.tamk.fi/r1/reservation/search?apiKey=${openDataKey}`, {
                 startDate: from,
                 endDate: to,
                 studentGroup: [classId]
             });
+            return ret.data.reservations || [];
         } catch(e) {
             console.log(e);
-        } finally {
-            return ret.data.reservation || [];
+            return [];
         }
     },
     formatSchedule: function(reservations) {
