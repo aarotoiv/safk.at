@@ -38,7 +38,6 @@
     background: #000;
     border: solid 1px #fff;
     position: relative;
-    overflow: hidden;
     background-image: url("https://sourcery.rocks/static/96869fdd86c7496a23c7a2bab50849c0-038dc49b5c3821901578f1188d9f5dce.jpeg");
     background-size: cover;
     background-position: center center;
@@ -52,31 +51,19 @@
     height: 100%;
     border: solid 1px #fff;
     background: #000;
-}
-.doorInner:after {
-    content: " ";
-    position: absolute;
-    right: 30px;
-    top: 50%;
-    background: #000;
-    border: solid 1px #fff;
-    width: 20px;
-    height: 20px;
+    transform-origin: left;
+    will-change: transform;
 }
 .door.open .doorInner {
-    animation: doorOpenAnim 0.7s ease-in-out forwards;
+    animation: doorOpenAnim 0.5s ease-in-out forwards;
+}
+@keyframes doorOpenAnim {
+    from { transform: perspective(0px) rotateY(0deg); }
+    to { transform: perspective(1200px) rotateY(-105deg); }
 }
 .alpha {
     position: absolute;
     bottom: 0;
     font-size: 10px;
     text-align: center;
-}
-@keyframes doorOpenAnim {
-    from {
-        transform: translateX(0px);
-    }
-    to { 
-        transform: translateX(-170px);
-    }
 }
