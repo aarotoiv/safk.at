@@ -213,5 +213,25 @@ module.exports = {
                 valid = false;
         }
         return valid;
+    },
+    prodDebug: function() {
+        const today = misc.getToday();
+        const from = today.toISOString();
+        const destDate = misc.addDays(today, 6);
+        const to = destDate.toISOString();
+        
+        axios.post(`https://opendata.tamk.fi/r1/reservation/search?apiKey=${keys.openDataKey}`, {
+            startDate: from,
+            endDate: to,
+            studentGroup: ["19TIETOB"]
+        })
+        .then(res => {
+            console.log("RECEIVED DATA");
+            console.log(res);
+        })
+        .catch(err => {
+            console.log("HERES THE ERR");
+            console.log(err);
+        });
     }
 };
