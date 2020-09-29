@@ -2,6 +2,9 @@ const axios = require('axios');
 const misc = require('./misc');
 const keys = require('../keys');
 
+const httpClient = axios.create();
+httpClient.defaults.timeout = 2000;
+
 module.exports = {
     fetchSchedule: async function(classId) {
         try {
@@ -10,7 +13,7 @@ module.exports = {
             const destDate = misc.addDays(today, 6);
             const to = destDate.toISOString();
             
-            const ret = await axios.post(`https://opendata.tamk.fi/r1/reservation/search?apiKey=${keys.openDataKey}`, {
+            const ret = await httpClient.post(`https://opendata.tamk.fi/r1/reservation/search?apiKey=${keys.openDataKey}`, {
                 startDate: from,
                 endDate: to,
                 studentGroup: [classId]
@@ -220,6 +223,8 @@ module.exports = {
         const destDate = misc.addDays(today, 6);
         const to = destDate.toISOString();
         
+        console.log(from);
+        console.log(to);
         axios.post(`https://opendata.tamk.fi/r1/reservation/search?apiKey=${keys.openDataKey}`, {
             startDate: from,
             endDate: to,

@@ -1,7 +1,11 @@
 const axios = require('axios');
+const httpClient = axios.create();
+httpClient.defaults.timeout = 2000;
+
 
 module.exports = {
     fetchMenu: async function() {
+        console.log("Fetchign menui");
         let content = {
             simplified: {
                 headers: [],
@@ -11,7 +15,8 @@ module.exports = {
         };
     
         try {
-            const res = await axios.get("http://fi.jamix.cloud/apps/menuservice/rest/haku/menu/97603/1?lang=fi");
+            const res = await httpClient.get("http://fi.jamix.cloud/apps/menuservice/rest/haku/menu/97603/1?lang=fi");
+            console.log(res);
             if (res.data.length < 1 
                 || res.data[0].menuTypes.length < 1
                 || res.data[0].menuTypes[0].menus.length < 1) {

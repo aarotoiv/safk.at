@@ -11,7 +11,7 @@ app.use(device.capture());
 app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cors());
+//app.use(cors());
 
 //const oldRoutes = require('./oldRoutes');
 //app.use('/api/v1', oldRoutes);
