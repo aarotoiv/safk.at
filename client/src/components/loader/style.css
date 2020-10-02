@@ -1,0 +1,26 @@
+.loaderContainer {
+    width: 100px;
+    height: 100px;
+    position: fixed;
+    top: calc(50% - 50px);
+    right: calc(50% - 50px);
+}
+.loader {
+    width: 50px;
+    height: 50px;
+    position: relative;
+    margin: 10px auto 15px auto;
+    background: transparent;
+    border: solid 1px #fff;
+    will-change: transform;
+    animation: loaderSpin 1s linear infinite;
+}
+@keyframes loaderSpin {
+    0% { transform: rotateZ(0deg) scale(1); }
+    50% { transform: rotateZ(180deg) scale(0.7); }
+    100% { transform: rotateZ(360deg) scale(1); }
+}
+.loaderText {
+    display: block;
+    text-align: center;
+}

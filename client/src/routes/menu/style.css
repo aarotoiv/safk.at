@@ -1,0 +1,47 @@
+.menu {
+    position: relative;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+.container {
+    position: relative;
+    margin: 10px 0px 0px 10px;
+    animation: menuEntry 0.2s ease-in-out forwards;
+    padding-bottom: 50px;
+    display: inline-block;
+}
+@keyframes menuEntry {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+span {
+    color: #ccc;
+    font-size: calc(13px + 0.2vw);
+    display:block;
+    padding-right: 15px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+.header {
+    color: #fff;
+    font-size: calc(16px + 0.2vw);
+    margin-bottom: 5px;
+    margin-top: 15px;
+}
+.header:first-child {
+    margin-top: 5px;
+}
+.item:last-child {
+    margin-bottom: 10px;
+}
+.mealOption {
+    margin-bottom: 15px;
+}
+.noMenu {
+    color: #fff;
+    font-size: 30px;
+    line-height: 100vh;
+    text-align: center;
+}

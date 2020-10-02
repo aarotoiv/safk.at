@@ -1,0 +1,106 @@
+.scheduleContainer {
+    width: 80%;
+    height: 100%;
+    margin: 0px auto;
+    position:relative;
+    animation: scheduleEntry 0.2s ease-in-out forwards;
+}
+@keyframes scheduleEntry {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+.scheduleBlock {
+    margin-top: 50px;
+    width: 20%;
+    min-height: 500px;
+    height: auto;
+    float:left;
+    overflow:hidden;
+    padding-bottom: 50px;
+}
+p {
+    color: #fff;
+    margin: 0;
+    margin-bottom: 5px;
+    font-size: 17px;
+}
+.eventTime {
+    font-size: 20px;
+}
+.eventInfoLine {
+    width: 100%; 
+    word-wrap: break-word;
+}
+.eventInfoLine:last-child {
+    margin-bottom: 10px;
+}
+.blockDate {
+    text-align:center;
+    font-size: 25px;
+    color: #fff;
+    margin-bottom: 25px;
+}
+.blockWeekday {
+    text-align: center;
+}
+.blockEvent {
+    margin-left: 10px;
+    margin-right: 10px;
+    width: calc(100% - 40px);
+    background: #0C0C0C;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    padding: 10px;
+}
+.blockEvent:last-child() {
+    border-bottom: none;
+}
+.noSched {
+    display: block;
+    color: #fff;
+    font-size: 30px;
+    text-align: center;
+    padding-top: 50vh;
+    max-width: 500px;
+    margin: 0 auto;
+}
+.schedNavButton {
+    position: absolute;
+    top: 50px;
+    width: 50px;
+    height: 50px;
+    z-index: 1;
+    display: none;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    color: #fff;
+    font-size: 30px;
+    outline: none;
+}
+.goLeft {
+    left: 0;
+}
+.goRight {
+    right: 0;
+}
+.schedNavButton.hidden {
+    display: none;
+}
+@media only screen and (max-width: 1200px) {
+    .scheduleContainer {
+        width: 98% !important;
+    }
+}
+@media only screen and (max-width: 900px) {
+    .scheduleBlock {
+        display: none;
+    }
+    .scheduleBlock.active {
+        display: block !important; 
+        width: 100%;
+    }
+    .schedNavButton {
+        display: block;
+    }
+}

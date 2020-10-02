@@ -1,7 +1,7 @@
 {
-  "name": "juu",
+  "name": "safk.at",
   "version": "1.0.0",
-  "description": "",
+  "description": "Beautifully formatted daily school cafeteria offerings.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -11,11 +11,19 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.19.2",
     "body-parser": "*",
+    "cors": "*",
     "ejs": "^3.0.1",
     "express": "*",
     "express-device": "^0.4.2",
     "morgan": "*",
-    "osmosis": "^1.1.10"
+    "node-cache": "^5.1.0",
+    "osmosis": "^1.1.10",
+    "puppeteer": "*",
+    "socket.io": "^2.3.0"
+  },
+  "devDependencies": {
+    "object-sizeof": "^1.5.2"
   }
 }
