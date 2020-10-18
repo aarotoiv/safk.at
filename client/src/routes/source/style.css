@@ -42,7 +42,9 @@
     background-position: center center;
     margin: 50px auto;
     animation: doorEntry 0.2s ease-in-out forwards;
-    box-shadow: inset 5px 5px 2px #191919, 
+    box-shadow:  5px 5px 5px #191919, 
+            -5px -5px 5px #272727,
+            inset 5px 5px 2px #191919, 
             inset -5px -5px 2px #272727;
 }
 .doorInner {

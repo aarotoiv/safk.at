@@ -1,6 +1,7 @@
 const axios = require('axios');
 const misc = require('./misc');
 const keys = require('../keys');
+const customEvents = require('../customEvents');
 
 const httpClient = axios.create();
 httpClient.defaults.timeout = 2000;
@@ -8,10 +9,8 @@ httpClient.defaults.timeout = 2000;
 module.exports = {
     fetchSchedule: async function(classId) {
         try {
-            const today = misc.getToday();
+            let today = misc.getToday(); 
             const from = today.toISOString();
-            const destDate = misc.addDays(today, 6);
-            const to = destDate.toISOString();
             
             const ret = await httpClient.post(`https://opendata.tamk.fi/r1/reservation/search?apiKey=${keys.openDataKey}`, {
                 startDate: from,
@@ -23,7 +22,7 @@ module.exports = {
             return [];
         }
     },
-    formatSchedule: function(reservations) {
+    formatSchedule: function(reservations, classId) {
         let scheduleData = {};
 
         reservations.forEach(reservation => {
@@ -38,6 +37,7 @@ module.exports = {
                     day: String(reservationStart.getDate()).padStart(2, '0') + "." 
                         + String(reservationStart.getMonth() + 1).padStart(2, '0') + "." 
                         + String(reservationStart.getFullYear()).padStart(2, '0'),
+                    matchDate: reservationKey,
                     events: []
                 };
             }
@@ -82,6 +82,23 @@ module.exports = {
 
             scheduleData[reservationKey].events.push(eventInfo);
         });
+        
+        // Plug custom events
+        Object.values(scheduleData).forEach(schedItem => {
+            const key = schedItem.matchDate;
+            const dayItems = customEvents[schedItem.day];
+            if (dayItems) {
+                dayItems.forEach(item => {
+                    for (let i = 0; i < item.classIdentifiers.length; i++) {
+                        if (classId.includes(item.classIdentifiers[i])) {
+                            scheduleData[key].events.push(item);       
+                            break;
+                        }
+                    }
+                });
+            }
+        });
+
 
         return Object.values(scheduleData);
     },

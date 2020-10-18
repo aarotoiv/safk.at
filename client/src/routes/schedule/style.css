@@ -55,6 +55,21 @@ p {
     will-change: box-shadow;
 }
 
+.blockEvent.pop {
+    will-change: transform;
+    animation: blockEntry 0.2s ease-in-out forwards, popEvent 1s ease-in-out infinite;
+}
+
+.blockEvent.source {
+    background: #FD6A02;
+}
+
+@keyframes popEvent {
+    0% { transform: scale(1);}
+    50% { transform: scale(1.02);}
+    100% { transform: scale(1);}
+}
+
 @keyframes blockEntry {
     from { box-shadow: 0px 0px 0px #191919,
         0px 0px 0px #272727; }

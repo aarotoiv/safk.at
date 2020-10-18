@@ -66,7 +66,7 @@ router.get('/:class', cacheInst.seekExistingPlan, async (req, res) => {
     }
     
     const days = req.existingData 
-        || util.sched.formatSchedule(await util.sched.fetchSchedule(classId));
+        || util.sched.formatSchedule(await util.sched.fetchSchedule(classId), classId);
 
     if (!req.existingData && days.length > 0)
         cacheInst.savePlan(classId, days);
@@ -88,7 +88,7 @@ router.get('/api/:class', cacheInst.seekExistingPlan, async (req, res) => {
         return;
     }
     const days = req.existingData 
-        || util.sched.formatSchedule(await util.sched.fetchSchedule(classId));
+        || util.sched.formatSchedule(await util.sched.fetchSchedule(classId), classId);
     if (!req.existingData && days.length > 0)
         cacheInst.savePlan(classId, days);
         

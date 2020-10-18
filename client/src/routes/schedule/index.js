@@ -82,7 +82,7 @@ const ScheduleDay = ({ day, active, fullScreenActive }) => {
             </p>
             {day.events.map(evt => {
                 return (
-                    <div class={style.blockEvent}>
+                    <div class={`${style.blockEvent}` + (evt.effect ? ` ${style[evt.effect]}` : '') + (evt.accent ? ` ${style[evt.accent]}` : '')}>
                         <p class={style.eventTime}>
                             {evt.startTime} - {evt.endTime}
                         </p>
