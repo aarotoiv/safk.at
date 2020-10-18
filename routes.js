@@ -9,14 +9,15 @@ const Cache = require('./cache');
 const cacheInst = new Cache();
 
 router.get('/', cacheInst.seekExistingMenu, async (req, res) => {
-    const content = req.existingMenu || await util.menu.fetchMenu();
-    if (!req.existingMenu && content.simplified.headers.length > 0) 
-        cacheInst.saveMenu(content);
-
     if (util.misc.showWebsite(req.device.type)) 
         res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
-    else
+    else {
+        const content = req.existingMenu || await util.menu.fetchMenu();
+        if (!req.existingMenu && content.simplified.headers.length > 0) 
+            cacheInst.saveMenu(content);
+
         res.send(content.simplified.headers.length > 0 ? util.menu.cleanMenu(content.simplified) : "No menu available.\n");
+    }
 });
 
 router.get('/api/menu', cacheInst.seekExistingMenu, async (req, res) => {
@@ -64,16 +65,16 @@ router.get('/:class', cacheInst.seekExistingPlan, async (req, res) => {
         res.sendStatus(404);
         return;
     }
-    
-    const days = req.existingData 
-        || util.sched.formatSchedule(await util.sched.fetchSchedule(classId), classId);
 
-    if (!req.existingData && days.length > 0)
-        cacheInst.savePlan(classId, days);
-
-    if (util.misc.showWebsite(req.device.type)) 
+    if (util.misc.showWebsite(req.device.type))
         res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
     else {
+        const days = req.existingData 
+            || util.sched.formatSchedule(await util.sched.fetchSchedule(classId), classId);
+
+        if (!req.existingData && days.length > 0)
+            cacheInst.savePlan(classId, days);
+
         res.send(days.length > 0
             ? util.sched.cleanSchedule(util.sched.limitInfoLength(days, 25))
             : "Did you use a correct classId?\n"
