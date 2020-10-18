@@ -53,15 +53,15 @@ const Schedule = ({ classId }) => {
                 onTouchEnd={(evt) => _onTouchEnd(evt)}>
                 <button class={`${style.schedNavButton} ${style.goLeft}` + (activeIndex <= 0 ? ` ${style.hidden}` : '')} 
                     onClick={() => changeActiveIndex(-1)}>
-                    &lt;
+                    <div class={style.goLeftButton}></div>
                 </button>
                 <button class={`${style.schedNavButton} ${style.goRight}` + (activeIndex >= (schedule.length - 1) ? ` ${style.hidden}` : '')} 
                     onClick={() => changeActiveIndex(1)}>
-                    &gt;
+                    <div class={style.goRightButton}></div>
                 </button>
                 {
                     schedule.map((day, i) => {
-                        return <ScheduleDay day={day} active={i == activeIndex} />
+                        return <ScheduleDay day={day} fullScreenActive={i >= activeIndex && i < activeIndex + 5} active={i == activeIndex} />
                     })
                 }
             </div>
@@ -71,9 +71,9 @@ const Schedule = ({ classId }) => {
     }
 }
 
-const ScheduleDay = ({ day, active }) => {
+const ScheduleDay = ({ day, active, fullScreenActive }) => {
     return (
-        <div class={`${style.scheduleBlock}` + (active ? ` ${style.active}` : '')}>
+        <div class={`${style.scheduleBlock}` + (active ? ` ${style.active}` : '') + (fullScreenActive ? ` ${style.fullScreenActive}`: '')}>
             <p class={style.blockWeekday}>
                 { day.weekDay }
             </p>

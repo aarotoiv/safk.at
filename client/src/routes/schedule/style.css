@@ -15,8 +15,8 @@
     min-height: 500px;
     height: auto;
     float:left;
-    overflow:hidden;
     padding-bottom: 50px;
+    display:none;
 }
 p {
     color: #fff;
@@ -47,14 +47,21 @@ p {
     margin-left: 10px;
     margin-right: 10px;
     width: calc(100% - 40px);
-    background: #0C0C0C;
+    background: transparent;
     border-radius: 5px;
     margin-bottom: 15px;
     padding: 10px;
+    animation: blockEntry 0.2s ease-in-out forwards;
+    will-change: box-shadow;
 }
-.blockEvent:last-child() {
-    border-bottom: none;
+
+@keyframes blockEntry {
+    from { box-shadow: 0px 0px 0px #191919,
+        0px 0px 0px #272727; }
+    to { box-shadow:  5px 5px 5px #191919, 
+        -5px -5px 5px #272727; }
 }
+
 .noSched {
     display: block;
     color: #fff;
@@ -66,11 +73,10 @@ p {
 }
 .schedNavButton {
     position: absolute;
-    top: 50px;
-    width: 50px;
+    top: 25px;
+    width: 60px;
     height: 50px;
     z-index: 1;
-    display: none;
     border: none;
     background: transparent;
     cursor: pointer;
@@ -92,9 +98,22 @@ p {
         width: 98% !important;
     }
 }
+
+@media only screen and (min-width: 901px) {
+    .schedNavButton.goLeft {
+        left: 35%;
+    }
+    .schedNavButton.goRight {
+        right: 35%;
+    }
+    .fullScreenActive {
+        display: block;
+    }
+}
+
 @media only screen and (max-width: 900px) {
-    .scheduleBlock {
-        display: none;
+    .schedNavButton {
+        top: 70px;
     }
     .scheduleBlock.active {
         display: block !important; 
@@ -103,4 +122,44 @@ p {
     .schedNavButton {
         display: block;
     }
+}
+.goLeftButton, .goRightButton {
+    position: absolute;
+    z-index: 99;
+    top: 0px;
+    left: 0px;
+    background: #fff;
+    width: 60px;
+    height: 10px;
+    border-radius: 10px;
+}
+.goLeftButton {
+    transform: scale(0.4);
+}
+.goRightButton {
+    transform: scale(-0.4);
+}
+.goLeftButton:after, .goRightButton:after {
+    content: " ";
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    background: #fff;
+    width: 40px;
+    height: 10px;
+    border-radius: 10px;
+    transform-origin: 0% -50%;
+    transform: rotate(45deg);
+}
+.goLeftButton:before, .goRightButton:before {
+    content: " ";
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    background: #fff;
+    width: 40px;
+    height: 10px;
+    border-radius: 10px;
+    transform-origin: 0% 150%;
+    transform: rotate(-45deg);
 }

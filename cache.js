@@ -4,7 +4,7 @@ let self;
 
 class Cache {
     constructor() {
-        this.cache = new NodeCache({stdTTL: 43200});
+        this.cache = new NodeCache({ stdTTL: 604800 });
         self = this;
     }
     seekExistingPlan(req, res, next) {

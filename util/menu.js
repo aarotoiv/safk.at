@@ -2,10 +2,8 @@ const axios = require('axios');
 const httpClient = axios.create();
 httpClient.defaults.timeout = 2000;
 
-
 module.exports = {
     fetchMenu: async function() {
-        console.log("Fetchign menui");
         let content = {
             simplified: {
                 headers: [],
@@ -16,7 +14,6 @@ module.exports = {
     
         try {
             const res = await httpClient.get("http://fi.jamix.cloud/apps/menuservice/rest/haku/menu/97603/1?lang=fi");
-            console.log(res);
             if (res.data.length < 1 
                 || res.data[0].menuTypes.length < 1
                 || res.data[0].menuTypes[0].menus.length < 1) {
@@ -35,6 +32,7 @@ module.exports = {
             // Just doing this because server uses UTC time.
             // CBA
             today.setTime(today.getTime() + (3 * 60 * 60 * 1000));
+            today.setDate(today.getDate() + 1);
             const dateForComp = String(today.getFullYear()) 
                 + String(today.getMonth() + 1).padStart(2, '0')
                 + String(today.getDate()).padStart(2, '0');

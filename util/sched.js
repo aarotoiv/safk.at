@@ -15,7 +15,6 @@ module.exports = {
             
             const ret = await httpClient.post(`https://opendata.tamk.fi/r1/reservation/search?apiKey=${keys.openDataKey}`, {
                 startDate: from,
-                endDate: to,
                 studentGroup: [classId]
             });
             return ret.data.reservations || [];
@@ -85,60 +84,6 @@ module.exports = {
         });
 
         return Object.values(scheduleData);
-    },
-    // Not used anymore. Still here for reasons.
-    oldFormatSchedule: function(sched, from) {
-        let ret = {};
-        sched.forEach((schedItem) => {
-            const startDate = schedItem.start_date;
-            const endDate = schedItem.end_date;
-            const dateString = startDate.split(" ")[0];
-            if (!ret[dateString]) {
-                ret[dateString] = {};
-                ret[dateString].todayDate = from;
-                ret[dateString].longest = 27;
-                ret[dateString].weekDay = misc.getDayOfWeek(dateString);
-                ret[dateString].day = misc.prettifyDate(dateString);
-                ret[dateString].events = [];
-            }
-            
-            let eventInfo = {
-                startTime: startDate.split(" ")[1],
-                endTime: endDate.split(" ")[1],
-                time: startDate.split(" ")[1],
-                info: []
-            };
-
-            if (schedItem.code) {
-                schedItem.code.forEach(code => {
-                    eventInfo.info.push(code);
-                });
-                eventInfo.code = schedItem.code;
-            }
-
-            if (schedItem.subject) {
-                eventInfo.info.push(schedItem.subject);
-                eventInfo.subject = schedItem.subject;
-            }
-            
-            if (schedItem.location) {
-                schedItem.location.forEach(loc => {
-                    eventInfo.info.push(loc.class);
-                });
-                eventInfo.location = schedItem.location;
-            }
-            
-            if (schedItem.reserved_for) {
-                schedItem.reserved_for.forEach(reserved => {
-                    eventInfo.info.push(reserved);
-                });
-                eventInfo.reserved_for = schedItem.reserved_for;
-            }
-
-            ret[dateString].events.push(eventInfo);
-        });
-
-        return Object.values(ret);
     },
     cleanSchedule: function(days) {
         let cleaned = [];
@@ -223,8 +168,6 @@ module.exports = {
         const destDate = misc.addDays(today, 6);
         const to = destDate.toISOString();
         
-        console.log(from);
-        console.log(to);
         axios.post(`https://opendata.tamk.fi/r1/reservation/search?apiKey=${keys.openDataKey}`, {
             startDate: from,
             endDate: to,

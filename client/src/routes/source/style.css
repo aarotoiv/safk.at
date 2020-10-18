@@ -36,21 +36,21 @@
     width: 250px;
     height: 400px;
     background: #000;
-    border: solid 1px #fff;
     position: relative;
     background-image: url("https://sourcery.rocks/static/96869fdd86c7496a23c7a2bab50849c0-038dc49b5c3821901578f1188d9f5dce.jpeg");
     background-size: cover;
     background-position: center center;
     margin: 50px auto;
     animation: doorEntry 0.2s ease-in-out forwards;
+    box-shadow: inset 5px 5px 2px #191919, 
+            inset -5px -5px 2px #272727;
 }
 .doorInner {
     position: absolute;
     z-index: 1;
     width: 100%;
     height: 100%;
-    border: solid 1px #fff;
-    background: #000;
+    background: #151515;
     transform-origin: left;
     will-change: transform;
 }

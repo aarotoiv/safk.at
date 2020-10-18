@@ -13,8 +13,10 @@
     max-width: 90%;
     width: 500px;
     position: relative;
-    background: #101010;
+    background: #202020;
     border-radius: 5px;
+    box-shadow:  5px 5px 5px #191919, 
+        -5px -5px 5px #272727;
 }
 .popUpTitle {
     margin: 0;
@@ -41,6 +43,7 @@
     font-size: calc(20px + 1vw);
     font: inherit;
     font-family: 'Roboto Mono',monospace;
+    background: #fff;
 }
 .popUpButton {
     display: block;
@@ -48,14 +51,20 @@
     width: calc(100% - 30px);
     height: calc(30px + 0.5vw);
     margin: 20px auto;
-    border: solid 2px #fff;
-    background: transparent;
+    border: none;
+    box-shadow:  5px 5px 5px #191919, 
+        -5px -5px 5px #272727;
+    background: #202020;
     border-radius: 5px;
     outline: none;
     font-size: calc(25px + 0.5vw);
     color: #fff;
     font: inherit;
     font-family: 'Roboto Mono',monospace;
+}
+.popUpButton:active {
+    box-shadow: inset -5px 5px 5px #1a1a1a, 
+            inset 5px -5px 5px #262626;
 }
 .check {
     display: block;
