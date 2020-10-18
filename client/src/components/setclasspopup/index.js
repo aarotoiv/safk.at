@@ -7,7 +7,7 @@ const SetClassPopup = ({ setLocalClassId, setLocalSourceNav }) => {
     const query = new URLSearchParams(window.location.search);
     const requestClassId = query.get('requestClassId') ?? preactLocalStorage.get('safk-at-preferred-classid');
     const [ classId, setClassId ] = useState(requestClassId ? requestClassId : "");
-    const [ sourceNav, setSourceNav ] = useState(false);
+    const [ sourceNav, setSourceNav ] = useState(preactLocalStorage.get('safk-at-preferred-classid') ?? false);
 
     const _onClick = async () => {
         preactLocalStorage.set('safk-at-preferred-classid', classId);
