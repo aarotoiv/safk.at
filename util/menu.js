@@ -32,7 +32,6 @@ module.exports = {
             // Just doing this because server uses UTC time.
             // CBA
             today.setTime(today.getTime() + (3 * 60 * 60 * 1000));
-            today.setDate(today.getDate() + 1);
             const dateForComp = String(today.getFullYear()) 
                 + String(today.getMonth() + 1).padStart(2, '0')
                 + String(today.getDate()).padStart(2, '0');
