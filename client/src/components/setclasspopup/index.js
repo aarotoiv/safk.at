@@ -7,7 +7,7 @@ const SetClassPopup = ({ setLocalClassId, setLocalSourceNav }) => {
     const query = new URLSearchParams(window.location.search);
     const requestClassId = query.get('requestClassId') ?? preactLocalStorage.get('safk-at-preferred-classid');
     const [ classId, setClassId ] = useState(requestClassId ? requestClassId : "");
-    const [ sourceNav, setSourceNav ] = useState(preactLocalStorage.get('safk-at-preferred-classid') ?? false);
+    const [ sourceNav, setSourceNav ] = useState(preactLocalStorage.get('safk-at-source-nav') === "true");
 
     const _onClick = async () => {
         preactLocalStorage.set('safk-at-preferred-classid', classId);
@@ -28,7 +28,7 @@ const SetClassPopup = ({ setLocalClassId, setLocalSourceNav }) => {
                     You may change the class id whenever you want, in the settings-section.
                 </p>
                 <input type="text" value={classId} class={style.popUpInput} onChange={(evt) => setClassId(evt.target.value)}/>
-                <input type="checkbox" onChange={(evt) => setSourceNav(evt.target.checked)} class={style.check} /><span class={style.checkText}>Add /source to the navigation</span>
+                <input type="checkbox" checked={sourceNav} onChange={(evt) => setSourceNav(evt.target.checked)} class={style.check} /><span class={style.checkText}>Add /source to the navigation</span>
                 <button aria-label="Save Settings" type="button" class={style.popUpButton} onClick={() => _onClick()}>Save</button>
             </div>
         </div>
