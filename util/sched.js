@@ -108,7 +108,11 @@ module.exports = {
 
         const longest = 27;
 
-        days.forEach(function(day) {
+        for (let i = 0; i < 5; i++) {
+            const day = days[i];
+            if (!day)
+                break;
+                
             let titleDivider = "";
             let dayDivider = "";
             for(let i = 0; i < longest; i++) {
@@ -138,7 +142,7 @@ module.exports = {
             if(rows > mostRows)
                 mostRows = rows;
             cleaned.push({day: dayContent.split("\n")});
-        });
+        }
         let render = "";
         for(let i = 0; i<mostRows; i++) {
             for(let j = 0; j<cleaned.length; j++) {
