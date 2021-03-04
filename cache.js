@@ -14,6 +14,18 @@ class Cache {
         } 
         next();
     }
+    seekExistingPlans(req, res, next) {
+        if (self && self.cache && req.query.classes) {
+            const existingData = []
+            for (const classId in req.query.classes) {
+                const data = self.cache.get( classId )
+                if (data)
+                    existingData.push(data)
+            }
+            req.existingData = existingData
+        }
+        next()
+    }
     savePlan(classId, data) {
         if(self && self.cache) {
             self.cache.set(classId, data);

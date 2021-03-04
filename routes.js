@@ -96,4 +96,22 @@ router.get('/api/:class', cacheInst.seekExistingPlan, async (req, res) => {
     res.json(days);
 });
 
+router.get('/api/classes/', cacheInst.seekExistingPlans, async (req, res) => {
+    const classes = req.query?.classes ?? []
+    
+    for (const classId in classes) {
+        if (!util.sched.validClassId(classId)) {
+            res.sendStatus(404)
+            return
+        }
+    }
+    let 
+    if (classes.length !== req.existingData.length) {
+
+    }
+    const readyClasses = []
+    
+})
+
+
 module.exports = router;

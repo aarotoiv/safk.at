@@ -5,12 +5,11 @@ import style from './style.css';
 import Loader from '../../components/loader';
 
 const Source = () => {
-
     const [ loading, setLoading ] = useState(true);
     const [ doorOpen, setDoorOpen ] = useState(false);
 
     useEffect(async () => {
-        const sourceData = await axios.get(process.env.NODE_ENV === "production" ? "/api/source" : "http://localhost:5000/api/source");
+        const sourceData = await axios.get(process.env.NODE_ENV === "production" ? "/api/source" : "http://localhost:2000/api/source");
         setDoorOpen(sourceData.data.doorOpen);
         setLoading(false);
     }, [ setDoorOpen, setLoading ]);
@@ -31,9 +30,7 @@ const Source = () => {
                             )
                         }
                     </>
-                ) : (
-                    <Loader />
-                )
+                ) : <Loader />
             }
 	    </div>
     );

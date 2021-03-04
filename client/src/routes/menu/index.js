@@ -9,7 +9,7 @@ const Menu = () => {
     const [ loading, setLoading ] = useState(true);
 
     useEffect(async () => {
-        const { data } = await axios(process.env.NODE_ENV === "production" ? '/api/menu' : 'http://localhost:5000/api/menu');
+        const { data } = await axios(process.env.NODE_ENV === "production" ? '/api/menu' : 'http://localhost:2000/api/menu');
         setData(data);
         setLoading(false);
     }, [ setData, setLoading ]);

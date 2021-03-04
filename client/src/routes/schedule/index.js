@@ -7,7 +7,6 @@ import { route } from 'preact-router';
 import preactLocalStorage from 'preact-localstorage';
 
 const Schedule = ({ classId }) => {
-
     const [ schedule, setSchedule ] = useState([]);
     const [ loading, setLoading ] = useState(true);
     const [ activeIndex, setActiveIndex ] = useState(0);
@@ -17,7 +16,10 @@ const Schedule = ({ classId }) => {
         if (!preactLocalStorage.get('safk-at-preferred-classid', false))
             route(`/group/?requestClassId=${classId}`);
         else {
-            const scheduleData = await axios.get(process.env.NODE_ENV === "production" ? `/api/${classId}` : `http://localhost:5000/api/${classId}`);
+            await axios.get('http://localhost:2000/api/classes', { params: {
+                classes: ['19i224', '19i226']
+            }});
+            const scheduleData = await axios.get(process.env.NODE_ENV === "production" ? `/api/${classId}` : `http://localhost:2000/api/${classId}`);
             setSchedule(scheduleData.data);
             setLoading(false);
         }

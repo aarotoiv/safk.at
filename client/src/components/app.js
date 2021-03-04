@@ -13,7 +13,6 @@ import SetClassPopup from './setclasspopup';
 import preactLocalStorage from 'preact-localstorage';
 
 const App = () => {
-
 	const [ localClassId, setLocalClassId ] = useState("");
 	const [ localSourceNav, setLocalSourceNav ] = useState(false);
 
