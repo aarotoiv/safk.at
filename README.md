@@ -3,6 +3,8 @@
 Web-server that usually returns daily school cafeteria offerings and schedules at Tampere University of Applied Sciences. 
 ## Why
 Yes
+## Are you sure
+No
 ## Usage
 ### Menu
 Go to the website [safk.at](https://safk.at) or use eg. `curl safk.at`.
