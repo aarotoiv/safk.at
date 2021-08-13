@@ -8,6 +8,8 @@ import Menu from '../routes/menu';
 import Schedule from '../routes/schedule';
 import Source from '../routes/source';
 import Error from '../routes/error';
+import Map from '../routes/map'
+
 import SetClassPopup from './setclasspopup';
 
 import preactLocalStorage from 'preact-localstorage';
@@ -29,6 +31,7 @@ const App = () => {
 				<SetClassPopup path="/group" setLocalClassId={setLocalClassId} setLocalSourceNav={setLocalSourceNav} />
 				<Schedule path="/:classId" />
 				<Error type="404" default />
+				<Map path="/map" />
 			</Router>
 		</div>
 	);

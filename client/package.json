@@ -33,7 +33,9 @@
     "preact-feather": "^4.1.0",
     "preact-localstorage": "^1.0.2",
     "preact-render-to-string": "^5.1.4",
-    "preact-router": "^3.2.1"
+    "preact-router": "^3.2.1",
+    "three": "^0.131.3",
+    "three-rounded-box": "^0.1.1"
   },
   "jest": {
     "preset": "jest-preset-preact",

@@ -18,10 +18,7 @@
     "express": "*",
     "express-device": "^0.4.2",
     "morgan": "*",
-    "node-cache": "^5.1.0",
-    "osmosis": "^1.1.10",
-    "puppeteer": "*",
-    "socket.io": "^2.3.0"
+    "node-cache": "^5.1.0"
   },
   "devDependencies": {
     "object-sizeof": "^1.5.2"
