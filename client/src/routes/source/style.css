@@ -1,71 +1,71 @@
 .container {
-    width: 100%;
-    height: 100%;
-    position: relative;
-    overflow: hidden;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
 }
 @keyframes doorEntry {
-    from { opacity: 0; }
-    to { opacity: 1; }
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 .doorText {
-    margin: 0;
-    font-size: 25px;
-    text-align: center;
-    position: relative;
-    animation: doorEntry 0.2s ease-in-out forwards;
+  margin: 0;
+  font-size: 25px;
+  text-align: center;
+  position: relative;
+  animation: doorEntry 0.2s ease-in-out forwards;
 }
 .doorText:hover:after {
-    visibility: visible;
-    opacity: 1;
-    transform: translateY(-10px);
+  visibility: visible;
+  opacity: 1;
+  transform: translateY(-10px);
 }
 .doorText:after {
-    content: "or is it...";
-    position: absolute;
-    left: 0;
-    bottom: -40px;
-    width: 100%;
-    font-size: 15px;
-    visibility: hidden;
-    transition: 0.3s ease-in-out;
-    opacity: 0;
-    transform: translateY(0px);
+  content: "or is it...";
+  position: absolute;
+  left: 0;
+  bottom: -40px;
+  width: 100%;
+  font-size: 15px;
+  visibility: hidden;
+  transition: 0.3s ease-in-out;
+  opacity: 0;
+  transform: translateY(0px);
 }
 .door {
-    width: 250px;
-    height: 400px;
-    background: #000;
-    position: relative;
-    background-image: url("https://sourcery.rocks/static/96869fdd86c7496a23c7a2bab50849c0-038dc49b5c3821901578f1188d9f5dce.jpeg");
-    background-size: cover;
-    background-position: center center;
-    margin: 50px auto;
-    animation: doorEntry 0.2s ease-in-out forwards;
-    box-shadow:  5px 5px 5px #191919, 
-            -5px -5px 5px #272727,
-            inset 5px 5px 2px #191919, 
-            inset -5px -5px 2px #272727;
+  width: 250px;
+  height: 400px;
+  background: #000;
+  position: relative;
+  background-image: url("https://sourcery.rocks/static/96869fdd86c7496a23c7a2bab50849c0-038dc49b5c3821901578f1188d9f5dce.jpeg");
+  background-size: cover;
+  background-position: center center;
+  margin: 50px auto;
+  animation: doorEntry 0.2s ease-in-out forwards;
+  box-shadow:  5px 5px 5px #191919, 
+          -5px -5px 5px #272727,
+          inset 5px 5px 2px #191919, 
+          inset -5px -5px 2px #272727;
 }
 .doorInner {
-    position: absolute;
-    z-index: 1;
-    width: 100%;
-    height: 100%;
-    background: #151515;
-    transform-origin: left;
-    will-change: transform;
+  position: absolute;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  background: #151515;
+  transform-origin: left;
+  will-change: transform;
 }
 .door.open .doorInner {
-    animation: doorOpenAnim 0.5s ease-in-out forwards;
+  animation: doorOpenAnim 0.5s ease-in-out forwards;
 }
 @keyframes doorOpenAnim {
-    from { transform: perspective(0px) rotateY(0deg); }
-    to { transform: perspective(1200px) rotateY(-105deg); }
+  from { transform: perspective(0px) rotateY(0deg); }
+  to { transform: perspective(1200px) rotateY(-105deg); }
 }
 .alpha {
-    position: absolute;
-    bottom: 0;
-    font-size: 10px;
-    text-align: center;
+  position: absolute;
+  bottom: 0;
+  font-size: 10px;
+  text-align: center;
 }

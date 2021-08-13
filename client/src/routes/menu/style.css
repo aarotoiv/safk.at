@@ -1,63 +1,63 @@
 .menu {
-    position: relative;
-    width: 100%;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
+  position: relative;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
 }
 .container {
-    position: relative;
-    margin: 20px 0px 55px 0px;
-    animation: menuEntry 0.2s ease-in-out forwards;
-    padding: 10px 5px 0px 5px;
-    border-radius: 5px;
-    display: inline-block;
-    box-shadow:  5px 5px 5px #191919, 
-        -5px -5px 5px #272727;
+  position: relative;
+  margin: 20px 0px 55px 0px;
+  animation: menuEntry 0.2s ease-in-out forwards;
+  padding: 10px 5px 0px 5px;
+  border-radius: 5px;
+  display: inline-block;
+  box-shadow:  5px 5px 5px #191919, 
+      -5px -5px 5px #272727;
 }
 
 @media only screen and (max-width: 900px) {
-    .menu {
-        display: block;
-    }
+  .menu {
+    display: block;
+  }
 
-    .container {
-        margin: 0px 0px 55px 0px;
-        box-shadow: none;
-    }
+  .container {
+    margin: 0px 0px 55px 0px;
+    box-shadow: none;
+  }
 }
 
 @keyframes menuEntry {
-    from { opacity: 0; }
-    to { opacity: 1; }
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 span {
-    color: #ccc;
-    font-size: calc(13px + 0.2vw);
-    display:block;
-    padding-right: 15px;
-    margin-left: 10px;
-    margin-right: 10px;
+  color: #ccc;
+  font-size: calc(13px + 0.2vw);
+  display:block;
+  padding-right: 15px;
+  margin-left: 10px;
+  margin-right: 10px;
 }
 .header {
-    color: #fff;
-    font-size: calc(16px + 0.2vw);
-    margin-bottom: 5px;
-    margin-top: 15px;
+  color: #fff;
+  font-size: calc(16px + 0.2vw);
+  margin-bottom: 5px;
+  margin-top: 15px;
 }
 .header:first-child {
-    margin-top: 5px;
+  margin-top: 5px;
 }
 .item:last-child {
-    margin-bottom: 10px;
+  margin-bottom: 10px;
 }
 .mealOption {
-    margin-bottom: 15px;
+  margin-bottom: 15px;
 }
 .noMenu {
-    color: #fff;
-    font-size: 30px;
-    line-height: 100vh;
-    text-align: center;
+  color: #fff;
+  font-size: 30px;
+  line-height: 100vh;
+  text-align: center;
 }
