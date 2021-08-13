@@ -27,7 +27,7 @@ export const initScene = (container) => {
   const light = new THREE.AmbientLight(0x404040, 2)
   scene.add(light)
 
-  const directionalLight = new THREE.DirectionalLight(0xffffff, 1)
+  const directionalLight = new THREE.DirectionalLight(0xFFE08D, 1.5)
   directionalLight.position.x = 10
   directionalLight.position.y = 9
   directionalLight.castShadow = true
@@ -45,15 +45,15 @@ export const initScene = (container) => {
   const groundMaterial = new THREE.MeshStandardMaterial({ color: 0x957251 })
 
   const grassCube = new THREE.Mesh(blockGeometry, grassMaterial)
-  grassCube.scale.x = 2.2
-  grassCube.scale.z = 2.2
+  grassCube.scale.x = 2.1
+  grassCube.scale.z = 2.1
   grassCube.scale.y = 0.1
   grassCube.position.y = -0.55
   grassCube.receiveShadow = true
   
   const dirtCube = new THREE.Mesh(blockGeometry, groundMaterial)
-  dirtCube.scale.x = 2.2
-  dirtCube.scale.z = 2.2
+  dirtCube.scale.x = 2.1
+  dirtCube.scale.z = 2.1
   dirtCube.scale.y = 1
   dirtCube.position.y = -1.65
 
