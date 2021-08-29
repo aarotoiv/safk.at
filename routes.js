@@ -2,6 +2,7 @@ const express = require('express');
 const keys = require('./keys');
 const util = require('./util');
 const path = require('path');
+const analytics = require('./analytics')
 
 const router = new express.Router();
 
@@ -95,5 +96,15 @@ router.get('/api/:class', cacheInst.seekExistingPlan, async (req, res) => {
 
   res.json(days);
 });
+
+router.get('/admin/analytics', analytics.checkAdminKey, async (req, res) => {
+  const requests = analytics.getRequests()
+  const requestEntries = Object.entries(requests).sort(([a_, aValue], [b_, bValue]) => bValue - aValue);
+  let ret = ''
+  for (const [key, value] of requestEntries) {
+    ret += `URL: ${key}: COUNT: ${value}\n`
+  }
+  res.send(ret)
+})
 
 module.exports = router;

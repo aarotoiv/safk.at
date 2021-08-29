@@ -7,6 +7,7 @@ const app = express();
 const path = require('path');
 const { misc } = require('./util');
 const compression = require('compression')
+const analytics = require('./analytics')
 
 app.use(device.capture());
 app.use(morgan('dev'));
@@ -14,6 +15,11 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cors());
 app.use(compression());
+
+app.use((req, res, next) => {
+  analytics.addRequest(req.url)
+  next()
+})
 
 const routes = require('./routes');
 
