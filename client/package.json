@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "build": "preact build --no-sw --no-esm",
+    "build": "preact build --no-sw --no-esm --no-inline-css",
     "serve": "sirv build --port 8080 --cors --single",
     "dev": "preact watch",
     "lint": "eslint src",
@@ -35,7 +35,8 @@
     "preact-render-to-string": "^5.1.4",
     "preact-router": "^3.2.1",
     "three": "^0.131.3",
-    "three-rounded-box": "^0.1.1"
+    "three-rounded-box": "^0.1.1",
+    "troika-three-text": "^0.42.0"
   },
   "jest": {
     "preset": "jest-preset-preact",

@@ -1,14 +1,16 @@
 import { h } from 'preact'
-import { useEffect, useRef } from 'preact/hooks'
+import { useEffect, useRef, useState } from 'preact/hooks'
 import style from './style.css'
 
 import { initScene, dispose } from './scene'
+import Loader from '../../components/loader'
 
 const Map = () => {
   const mapRef = useRef(null)
+  const [loaded, setLoaded] = useState(false)
 
   useEffect(() => {
-    initScene(mapRef.current)
+    initScene(mapRef.current, setLoaded)
 
     return () => {
       dispose()
@@ -16,8 +18,13 @@ const Map = () => {
   }, [])
 
   return (
-    <div ref={mapRef} class={style.container}>
-  	</div>
+    <>
+      <div ref={mapRef} class={style.container}>
+  	  </div>
+      {
+        !loaded ? <Loader /> : null
+      }
+    </>
   )
 }
 

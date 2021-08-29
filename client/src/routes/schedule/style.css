@@ -1,7 +1,8 @@
 .scheduleContainer {
   width: 80%;
-  height: 100%;
   margin: 0px auto;
+  padding-bottom: 40px;
+  overflow: hidden;
   position:relative;
   animation: scheduleEntry 0.2s ease-in-out forwards;
 }
@@ -26,6 +27,7 @@ p {
 }
 .eventTime {
   font-size: 20px;
+  font-weight: 700;
 }
 .eventInfoLine {
   width: 100%; 
@@ -39,20 +41,24 @@ p {
   font-size: 25px;
   color: #fff;
   margin-bottom: 25px;
+  font-weight: 700;
 }
 .blockWeekday {
+  font-size: 25px;
   text-align: center;
+  font-weight: 700;
 }
 .blockEvent {
   margin-left: 10px;
   margin-right: 10px;
-  width: calc(100% - 40px);
-  background: transparent;
+  width: calc(100% - 44px);
+  background: #202020;
   border-radius: 5px;
   margin-bottom: 15px;
-  padding: 10px;
+  padding: 12px;
   animation: blockEntry 0.2s ease-in-out forwards;
   will-change: box-shadow;
+  box-shadow: 0px 2px 5px -2px #000, 0px 5px 30px -18px #010101;
 }
 
 .blockEvent.pop {
@@ -68,13 +74,6 @@ p {
   0% { transform: scale(1);}
   50% { transform: scale(1.02);}
   100% { transform: scale(1);}
-}
-
-@keyframes blockEntry {
-  from { box-shadow: 0px 0px 0px #191919,
-      0px 0px 0px #272727; }
-  to { box-shadow:  5px 5px 5px #191919, 
-      -5px -5px 5px #272727; }
 }
 
 .noSched {

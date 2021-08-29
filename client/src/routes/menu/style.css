@@ -3,6 +3,7 @@
   width: 100%;
   margin: 0;
   padding: 0;
+  padding-bottom: 20px;
   display: flex;
   justify-content: center;
 }
@@ -10,11 +11,10 @@
   position: relative;
   margin: 20px 0px 55px 0px;
   animation: menuEntry 0.2s ease-in-out forwards;
-  padding: 10px 5px 0px 5px;
+  padding: 15px 15px 0px 15px;
   border-radius: 5px;
   display: inline-block;
-  box-shadow:  5px 5px 5px #191919, 
-      -5px -5px 5px #272727;
+  box-shadow:  0px 2px 5px -2px #000, 0px 5px 30px -18px #010101;
 }
 
 @media only screen and (max-width: 900px) {
@@ -56,8 +56,9 @@ span {
   margin-bottom: 15px;
 }
 .noMenu {
+  position: relative;
+  margin-top: 45vh;
   color: #fff;
-  font-size: 30px;
-  line-height: 100vh;
+  font-size: 20px;
   text-align: center;
 }

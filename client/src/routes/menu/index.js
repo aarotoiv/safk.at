@@ -38,7 +38,7 @@ const Menu = () => {
       </div>
     );
   } else
-    return <span class={style.noMenu}>Jamix leipoo.</span>;
+    return <span class={style.noMenu}>No menu data for today. Try again later.</span>;
 };
 
 export default Menu;

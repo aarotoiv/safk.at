@@ -1,22 +1,24 @@
 .navContainer {
 	position: fixed;
-	width: 100%;
+	width: 95%;
 	height: 50px;
 	z-index: 99;
-	bottom: 0;
+	bottom: 10px;
 	background: #202020;
+	left: 2.5%;
+	border-radius: 16px;
+	animation: navEntry 0.4s linear forwards;
+	box-shadow: 0px 2px 5px -2px #000, 0px 5px 30px -18px #010101;
 }
 .nav {
 	position: relative;
-	margin: 0px auto 5px auto;
+	margin: 5px auto 0px auto;
 	height: 45px;
 	width: 600px;
 	max-width: 100%;
 	display: flex;
 	flex-direction: row;
 	justify-content: space-evenly;
-	opacity: 0;
-	animation: navEntry 0.4s linear forwards;
 }
 @keyframes navEntry {
 	0% { transform: translateY(50px); opacity: 0; }

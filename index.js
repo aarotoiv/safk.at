@@ -6,15 +6,15 @@ const cors = require('cors');
 const app = express();
 const path = require('path');
 const { misc } = require('./util');
+const compression = require('compression')
 
 app.use(device.capture());
 app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cors());
+app.use(compression());
 
-//const oldRoutes = require('./oldRoutes');
-//app.use('/api/v1', oldRoutes);
 const routes = require('./routes');
 
 app.use('/', routes);
