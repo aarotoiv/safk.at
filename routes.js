@@ -30,7 +30,7 @@ router.get('/api/menu', cacheInst.seekExistingMenu, async (req, res) => {
 });
 
 router.post('/source', (req, res) => {
-  if (req.body && req.body.data) {
+ if (req.body && req.body.data) {
     try {
       const data = JSON.parse(req.body.data);
       const token = data.token;

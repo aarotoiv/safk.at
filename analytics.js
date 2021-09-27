@@ -5,7 +5,7 @@ const keys = require('./keys')
 const requests = {}
 
 const addRequest = (url) => {
-  const usableUrl = url.trim().substring(0, 50)
+  const usableUrl = url.trim().substring(0, 50).toLowerCase()
   if (usableUrl.includes('assets') || usableUrl.includes('static') || usableUrl.includes('admin')) {
     return
   }
