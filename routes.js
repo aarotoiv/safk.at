@@ -59,6 +59,10 @@ router.get('/api/source', cacheInst.getDoorOpen, (req, res) => {
   res.json({ doorOpen: req.isDoorOpen == "true" });
 });
 
+router.post('/api/octo', (req, res) => {
+  res.sendStatus(200);
+})
+
 router.get('/:class', cacheInst.seekExistingPlan, async (req, res) => {
   const classId = req.params.class;
 
