@@ -1,21 +1,39 @@
 module.exports = {
-  "23.10.2020": [
+  "29.09.2021": [
     {
-      "classIdentifiers": ["tieto"],
+      "classIdentifiers": ["21tieto"],
       "effect": "pop",
       "accent": "source",
-      "startTime": "18:00",
-      "endTime": "00:00",
+      "startTime": "17:30",
+      "endTime": "23:00",
       "locations": {
-        "code": "A3-27",
-        "name": "Auditorio"
+        "code": "Solu",
+        "name": "-"
       },
-      "subject": "SOURCE ry syyskokous",
+      "subject": "SOURCE uusien ilta",
       "info": [
-        "SOURCE ry syyskokous",
-        "A3-27",
-        "Auditorio",
-        "Vissiin kans etänä"
+        "SOURCE uusien ilta",
+        "Solu",
+        "Ilmainen lippu, kide.app",
+      ]
+    }
+  ],
+  "29.09.2021": [
+    {
+      "classIdentifiers": ["21i260ea", "21i260eb"],
+      "effect": "pop",
+      "accent": "source",
+      "startTime": "17:30",
+      "endTime": "23:00",
+      "locations": {
+        "code": "Solu",
+        "name": "-"
+      },
+      "subject": "SOURCE noob night",
+      "info": [
+        "SOURCE noob night",
+        "Solu",
+        "Free ticket @ kide.app",
       ]
     }
   ]
